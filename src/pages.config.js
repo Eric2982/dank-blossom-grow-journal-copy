@@ -47,33 +47,35 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import Dashboard from './pages/Dashboard';
+import Challenges from './pages/Challenges';
 import Chat from './pages/Chat';
 import Community from './pages/Community';
+import Dashboard from './pages/Dashboard';
 import Learn from './pages/Learn';
 import Nutrients from './pages/Nutrients';
-import Challenges from './pages/Challenges';
 import Premium from './pages/Premium';
 import Settings from './pages/Settings';
 import Store from './pages/Store';
 import StrainDetail from './pages/StrainDetail';
 import Summary from './pages/Summary';
+import __Layout from './Layout';
 
 export const PAGES = {
-  Dashboard,
-  Chat,
-  Community,
-  Learn,
-  Nutrients,
-  Challenges,
-  Premium,
-  Settings,
-  Store,
-  StrainDetail,
-  Summary,
-}
+	"Challenges": Challenges,
+	"Chat": Chat,
+	"Community": Community,
+	"Dashboard": Dashboard,
+	"Learn": Learn,
+	"Nutrients": Nutrients,
+	"Premium": Premium,
+	"Settings": Settings,
+	"Store": Store,
+	"StrainDetail": StrainDetail,
+	"Summary": Summary,
+};
 
 export const pagesConfig = {
-    mainPage: "Dashboard",
-    Pages: PAGES,
+	mainPage: "Dashboard",
+	Pages: PAGES,
+	Layout: __Layout,
 };
