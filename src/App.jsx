@@ -9,6 +9,7 @@ import ChallengeEntries from './pages/ChallengeEntries';
 import ChallengeVotes from './pages/ChallengeVotes';
 import Chat from './pages/Chat';
 import ContentReports from './pages/ContentReports';
+import FeedingPlans from './pages/FeedingPlans';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
