@@ -47,11 +47,13 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-
+import Home from './pages/Home';
 
 export const PAGES = {
+    "Home": Home,
 }
 
 export const pagesConfig = {
+    mainPage: "Home",
     Pages: PAGES,
 };
