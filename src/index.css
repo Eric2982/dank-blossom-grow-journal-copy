@@ -82,7 +82,20 @@
     @apply border-border outline-ring/50;
   }
 
+  *:not(input):not(textarea):not([role="textbox"]):not(p):not(span):not(h1):not(h2):not(h3):not(h4):not(h5):not(h6):not(label):not(a) {
+    @apply select-none;
+  }
+
   body {
     @apply bg-background text-foreground;
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+
+  @supports (padding: max(0px)) {
+    @media (max-height: 500px) {
+      body {
+        padding-bottom: 60px;
+      }
+    }
   }
 }
