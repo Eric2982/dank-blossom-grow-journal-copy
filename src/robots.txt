@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Allow: /.well-known/
+
+Sitemap: https://ju-j4z6.test-app.link/sitemap.xml
