@@ -4,15 +4,7 @@ import { queryClientInstance } from '@/lib/query-client'
 import { pagesConfig } from './pages.config'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
-import Challenges from './pages/Challenges';
-import ChallengeEntries from './pages/ChallengeEntries';
-import ChallengeVotes from './pages/ChallengeVotes';
-import Chat from './pages/Chat';
-import ContentReports from './pages/ContentReports';
-import FeedingPlans from './pages/FeedingPlans';
-import Forum from './pages/Forum';
-import GrowReadings from './pages/GrowReadings';
-import NutrientLogs from './pages/NutrientLogs';
+
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
