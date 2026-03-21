@@ -63,6 +63,7 @@ const AuthenticatedApp = () => {
         />
       ))}
       <Route path="/Challenges" element={<LayoutWrapper currentPageName="Challenges"><Challenges /></LayoutWrapper>} />
+      <Route path="/ContentReports" element={<LayoutWrapper currentPageName="ContentReports"><ContentReports /></LayoutWrapper>} />
       <Route path="/Chat" element={<LayoutWrapper currentPageName="Chat"><Chat /></LayoutWrapper>} />
       <Route path="/ChallengeVotes" element={<LayoutWrapper currentPageName="ChallengeVotes"><ChallengeVotes /></LayoutWrapper>} />
       <Route path="/ChallengeEntries" element={<LayoutWrapper currentPageName="ChallengeEntries"><ChallengeEntries /></LayoutWrapper>} />
