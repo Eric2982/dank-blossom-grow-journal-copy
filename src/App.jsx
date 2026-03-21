@@ -12,6 +12,7 @@ import ContentReports from './pages/ContentReports';
 import FeedingPlans from './pages/FeedingPlans';
 import Forum from './pages/Forum';
 import GrowReadings from './pages/GrowReadings';
+import NutrientLogs from './pages/NutrientLogs';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
