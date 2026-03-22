@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Edit, ArrowLeft, Trash2, Sprout, Flower, X, Bell, BellOff, Camera, Image, ChevronDown, ChevronUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../components/utils";
+import { useNavigation } from "@/lib/NavigationContext";
 import { differenceInDays, format } from "date-fns";
 import ReadingCard from "../components/grow/ReadingCard";
 import ReadingsChart from "../components/grow/ReadingsChart";
