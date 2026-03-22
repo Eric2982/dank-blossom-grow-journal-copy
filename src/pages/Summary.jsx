@@ -73,11 +73,9 @@ export default function Summary() {
     <div className="space-y-8">
       <div className="flex items-center gap-3">
         {strainId && (
-          <Link to={createPageUrl(`StrainDetail?id=${strainId}`)}>
-            <Button variant="ghost" size="icon" className="text-white/40 hover:text-white">
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-          </Link>
+          <button onClick={() => canGoBack() ? goBack() : window.history.back()} aria-label="Go back" className="text-white/40 hover:text-white min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-white/5 transition-colors">
+            <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+          </button>
         )}
         <div>
           <h1 className="text-2xl font-light text-white">Data Summary{strain ? ` — ${strain.name}` : ""}</h1>
