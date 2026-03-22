@@ -78,16 +78,17 @@ export default function StrainCard({ strain }) {
             </div>
           )}
         </div>
-      </Link>
+      </button>
 
       {/* Summary shortcut */}
-      <Link
-        to={createPageUrl(`Summary?strain_id=${strain.id}`)}
-        className="flex items-center gap-2 px-5 py-2.5 border-t border-white/5 text-white/40 hover:text-emerald-400 hover:bg-white/5 transition-colors text-xs"
+      <button
+        onClick={() => navigateTo(createPageUrl(`Summary?strain_id=${strain.id}`))}
+        aria-label={`View summary for ${strain.name}`}
+        className="flex items-center gap-2 px-5 py-2.5 border-t border-white/5 text-white/40 hover:text-emerald-400 hover:bg-white/5 transition-colors text-xs w-full min-h-[44px]"
       >
-        <BarChart3 className="w-3 h-3" />
+        <BarChart3 className="w-3 h-3" aria-hidden="true" />
         <span>View Summary</span>
-      </Link>
+      </button>
     </div>
   );
 }
