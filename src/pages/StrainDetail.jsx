@@ -24,6 +24,7 @@ import ExportPDFButton from "../components/grow/ExportPDFButton";
 export default function StrainDetail() {
   const urlParams = new URLSearchParams(window.location.search);
   const strainId = urlParams.get("id");
+  const { goBack, canGoBack } = useNavigation();
 
   const [showReadingForm, setShowReadingForm] = useState(false);
   const [showNutrientForm, setShowNutrientForm] = useState(false);
