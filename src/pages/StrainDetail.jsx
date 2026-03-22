@@ -136,7 +136,7 @@ export default function StrainDetail() {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-3">
-          <Link to={createPageUrl("Dashboard")}><Button variant="ghost" size="icon" className="text-white/40 hover:text-white"><ArrowLeft className="w-4 h-4" /></Button></Link>
+          <button onClick={() => canGoBack() ? goBack() : window.history.back()} aria-label="Go back" className="text-white/40 hover:text-white min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-white/5 transition-colors"><ArrowLeft className="w-4 h-4" aria-hidden="true" /></button>
           <div><h1 className="text-2xl font-light text-white">{strain.name}</h1><p className="text-white/40 text-sm">{strain.breeder}</p></div>
         </div>
         <div className="flex gap-2 flex-wrap">
