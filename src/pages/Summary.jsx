@@ -12,6 +12,7 @@ export default function Summary() {
   const queryClient = useQueryClient();
   const urlParams = new URLSearchParams(window.location.search);
   const strainId = urlParams.get("strain_id");
+  const { goBack, canGoBack } = useNavigation();
 
   const { data: strain } = useQuery({
     queryKey: ["strain", strainId],
