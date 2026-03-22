@@ -15,6 +15,7 @@ const tabNavItems = [
 ];
 
 const sidebarNavItems = [
+  { name: "Analytics", path: "/Analytics", icon: BarChart2, label: "Go to Analytics" },
   { name: "Community", path: "/Community", icon: Users, label: "Go to Community" },
   { name: "Learn", path: "/Learn", icon: BookOpen, label: "Go to Learn" },
   { name: "Nutrients", path: "/Nutrients", icon: Leaf, label: "Go to Nutrients" },

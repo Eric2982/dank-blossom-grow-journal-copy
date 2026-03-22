@@ -62,6 +62,7 @@ import Summary from './pages/Summary';
 import __Layout from './Layout';
 
 export const PAGES = {
+	"Analytics": Analytics,
 	"Challenges": Challenges,
 	"Chat": Chat,
 	"Community": Community,
