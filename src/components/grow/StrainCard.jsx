@@ -24,6 +24,7 @@ const plantTypeLabels = {
 };
 
 export default function StrainCard({ strain }) {
+  const { navigateTo } = useNavigation();
   const vegDays = strain.planted_date && strain.flipped_to_flower_date 
     ? differenceInDays(new Date(strain.flipped_to_flower_date), new Date(strain.planted_date))
     : strain.planted_date && !strain.flipped_to_flower_date && strain.status === "active"
