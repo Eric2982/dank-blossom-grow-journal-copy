@@ -4,8 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Thermometer, Droplets, Sun, Zap, Wind, FlaskConical, Activity, ArrowLeft } from "lucide-react";
 import StatCard from "../components/grow/StatCard";
 import PullToRefresh from "../components/PullToRefresh";
-import { Link } from "react-router-dom";
-import { createPageUrl } from "../components/utils";
+import { useNavigation } from "@/lib/NavigationContext";
 import { Button } from "@/components/ui/button";
 
 export default function Summary() {
