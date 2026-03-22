@@ -47,6 +47,7 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import Analytics from './pages/Analytics';
 import Challenges from './pages/Challenges';
 import Chat from './pages/Chat';
 import Community from './pages/Community';
