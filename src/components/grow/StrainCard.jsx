@@ -37,7 +37,7 @@ export default function StrainCard({ strain }) {
 
   return (
     <div className="block rounded-2xl border border-white/5 bg-white/[0.02] hover:border-emerald-500/30 hover:bg-white/[0.04] transition-all overflow-hidden">
-      <Link to={createPageUrl(`StrainDetail?id=${strain.id}`)} className="block p-5">
+      <button onClick={() => navigateTo(createPageUrl(`StrainDetail?id=${strain.id}`))} aria-label={`View details for ${strain.name}`} className="block p-5 w-full text-left">
         <div className="flex items-start justify-between mb-3">
           <div className="flex-1 min-w-0">
             <h3 className="text-white font-medium text-base truncate">{strain.name}</h3>
