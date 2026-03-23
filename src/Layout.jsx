@@ -5,6 +5,7 @@ import { Menu, X, LogOut, Home, MessageSquare, Users, BookOpen, Leaf, Zap, Troph
 import { base44 } from "@/api/base44Client";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigation } from "@/lib/NavigationContext";
+import MobileHeader from "@/components/MobileHeader";
 
 const tabNavItems = [
   { name: "Dashboard", path: "/", icon: Home, label: "Go to Dashboard" },

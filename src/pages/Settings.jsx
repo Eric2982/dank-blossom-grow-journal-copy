@@ -63,27 +63,18 @@ export default function Settings() {
   const activeGrows = strains.filter(s => s.status === "active");
   const completedGrows = strains.filter(s => s.status === "harvested");
 
-  const handleDeleteAccount = async () => {
-    if (deleteConfirmText.toLowerCase() !== "delete") { toast.error("Please type DELETE to confirm"); return; }
-    try {
-      const [strainsList, readings, nutrients, schedules, actions, plans, harvests, messages] = await Promise.all([
-        base44.entities.Strain.list(), base44.entities.GrowReading.list(), base44.entities.NutrientLog.list(),
-        base44.entities.WateringSchedule.list(), base44.entities.WateringAction.list(), base44.entities.FeedingPlan.list(),
-        base44.entities.Harvest.list(), base44.entities.ChatMessage.filter({ user_email: user.email }),
-      ]);
-      await Promise.all([
-        ...strainsList.map(s => base44.entities.Strain.delete(s.id)),
-        ...readings.map(r => base44.entities.GrowReading.delete(r.id)),
-        ...nutrients.map(n => base44.entities.NutrientLog.delete(n.id)),
-        ...schedules.map(s => base44.entities.WateringSchedule.delete(s.id)),
-        ...actions.map(a => base44.entities.WateringAction.delete(a.id)),
-        ...plans.map(p => base44.entities.FeedingPlan.delete(p.id)),
-        ...harvests.map(h => base44.entities.Harvest.delete(h.id)),
-        ...messages.map(m => base44.entities.ChatMessage.delete(m.id)),
-      ]);
+  const deleteAccountMutation = useMutation({
+    mutationFn: () => base44.functions.invoke('deleteAccount', {}),
+    onSuccess: () => {
       toast.success("Account data deleted successfully");
-      setTimeout(() => base44.auth.logout(createPageUrl("Dashboard")), 1500);
-    } catch (error) { toast.error("Failed to delete account: " + error.message); }
+      setTimeout(() => base44.auth.logout(), 1500);
+    },
+    onError: (error) => toast.error("Failed to delete account: " + error.message),
+  });
+
+  const handleDeleteAccount = () => {
+    if (deleteConfirmText.toLowerCase() !== "delete") { toast.error("Please type DELETE to confirm"); return; }
+    deleteAccountMutation.mutate();
   };
 
   if (!user) return <div className="flex items-center justify-center min-h-[60vh]"><p className="text-white/40">Loading...</p></div>;
