@@ -1,0 +1,83 @@
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.21';
+
+const assetlinks = [
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.base69be6d60d8aa3924e66d8e69.app",
+      "sha256_cert_fingerprints": [
+        "B7:5B:33:41:01:46:16:F1:A3:66:E0:82:60:81:F4:5C:C9:6C:22:08:B6:F7:51:80:A5:30:01:C1:3B:57:1A:1A"
+      ]
+    },
+    "relation_extensions": {
+      "delegate_permission/common.handle_all_urls": {
+        "dynamic_app_link_components": [
+          {"?": {"dl": "*"}},
+          {"#": "app"},
+          {"/": "/products/*"},
+          {"/": "/shoes", "?": {"in_app": "true"}},
+          {"/": "*", "exclude": true}
+        ]
+      }
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.base6994e0c98fb6b9d1d4521dbd.app",
+      "sha256_cert_fingerprints": [
+        "B3:3F:FC:80:DB:13:17:AA:B3:1C:EF:64:30:2A:DE:32:A7:6F:17:CD:85:D6:7E:9D:19:CA:1A:B5:AB:F5:F0:B5"
+      ]
+    },
+    "relation_extensions": {
+      "delegate_permission/common.handle_all_urls": {
+        "dynamic_app_link_components": [
+          {"?": {"dl": "*"}},
+          {"#": "app"},
+          {"/": "/dashboard"},
+          {"/": "/strains/*"},
+          {"/": "/community"},
+          {"/": "/premium"},
+          {"/": "*", "exclude": true}
+        ]
+      }
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "web",
+      "site": "https://archetypal-grow-wise-log.base44.app"
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "web",
+      "site": "https://ju-j4z6.test-app.link"
+    }
+  }
+];
+
+Deno.serve(async (req) => {
+  return new Response(JSON.stringify(assetlinks, null, 2), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Cache-Control": "public, max-age=3600"
+    }
+  });
+});
