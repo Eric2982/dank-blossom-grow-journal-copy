@@ -74,9 +74,14 @@ function App() {
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
         <Router>
-          <NavigationProvider>
-            <AuthenticatedApp />
-          </NavigationProvider>
+          <Routes>
+            <Route path="/.well-known/assetlinks.json" element={<AssetLinks />} />
+            <Route path="*" element={
+              <NavigationProvider>
+                <AuthenticatedApp />
+              </NavigationProvider>
+            } />
+          </Routes>
         </Router>
         <Toaster />
       </QueryClientProvider>
