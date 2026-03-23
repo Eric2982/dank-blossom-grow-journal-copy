@@ -57,14 +57,5 @@
       "namespace": "web",
       "site": "https://archetypal-grow-wise-log.base44.app"
     }
-  },
-  {
-    "relation": [
-      "delegate_permission/common.handle_all_urls"
-    ],
-    "target": {
-      "namespace": "web",
-      "site": "https://ju-j4z6.test-app.link"
-    }
   }
 ]
