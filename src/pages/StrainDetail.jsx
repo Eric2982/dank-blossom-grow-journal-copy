@@ -293,7 +293,7 @@ export default function StrainDetail() {
       )}
     </div>
 
-    <AddReadingDialog open={showReadingForm} onOpenChange={(open) => { setShowReadingForm(open); if (!open) setEditingReading(null); }} reading={editingReading} onSubmit={(data) => editingReading ? updateReadingMutation.mutate({ id: editingReading.id, data }) : createReadingMutation.mutate(data)} />
+    <AddReadingDialog open={showReadingForm} onOpenChange={(open) => { setShowReadingForm(open); if (!open) setEditingReading(null); }} reading={editingReading} isPending={createReadingMutation.isPending || updateReadingMutation.isPending} onSubmit={(data) => editingReading ? updateReadingMutation.mutate({ id: editingReading.id, data }) : createReadingMutation.mutate(data)} />
     <NutrientForm open={showNutrientForm} onOpenChange={(open) => { setShowNutrientForm(open); if (!open) setEditingNutrient(null); }} nutrient={editingNutrient} onSubmit={(data) => editingNutrient ? updateNutrientMutation.mutate({ id: editingNutrient.id, data }) : createNutrientMutation.mutate(data)} />
     <WateringForm open={showWateringForm} onOpenChange={(open) => { setShowWateringForm(open); if (!open) setEditingWatering(null); }} schedule={editingWatering} onSubmit={(data) => editingWatering ? updateWateringMutation.mutate({ id: editingWatering.id, data }) : createWateringMutation.mutate(data)} />
     <StrainForm open={showEditForm} onOpenChange={setShowEditForm} strain={strain} onSubmit={(data) => updateStrainMutation.mutate(data)} />
