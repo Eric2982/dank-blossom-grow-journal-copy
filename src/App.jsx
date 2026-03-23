@@ -9,7 +9,6 @@ import { AnimatePresence } from 'framer-motion';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import { NavigationProvider } from '@/lib/NavigationContext';
-import AssetLinks from '@/components/AssetLinks';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -74,14 +73,9 @@ function App() {
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
         <Router>
-          <Routes>
-            <Route path="/.well-known/assetlinks.json" element={<AssetLinks />} />
-            <Route path="*" element={
-              <NavigationProvider>
-                <AuthenticatedApp />
-              </NavigationProvider>
-            } />
-          </Routes>
+          <NavigationProvider>
+            <AuthenticatedApp />
+          </NavigationProvider>
         </Router>
         <Toaster />
       </QueryClientProvider>
