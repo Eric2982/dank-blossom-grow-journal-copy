@@ -62,7 +62,6 @@ const AuthenticatedApp = () => {
           }
         />
       ))}
-      <Route path="/.well-known/assetlinks.json" element={<AssetLinks />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
