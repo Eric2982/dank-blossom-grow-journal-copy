@@ -112,7 +112,7 @@ export default function Layout({ children, currentPageName }) {
 
       {/* Main Content */}
       <main className="flex-1 overflow-hidden md:ml-64 pb-20 md:pb-0 flex flex-col">
-        {/* Mobile Header */}
+        {/* Mobile Header - top bar (always visible on mobile) */}
         <div className="md:hidden sticky top-0 z-30 bg-white/[0.02] border-b border-white/5 px-4 py-3 flex items-center justify-between">
           <h1 className="text-lg font-light text-white">Dank Blossom</h1>
           <button
@@ -125,6 +125,8 @@ export default function Layout({ children, currentPageName }) {
             {sidebarOpen ? <X className="w-6 h-6" aria-hidden="true" /> : <Menu className="w-6 h-6" aria-hidden="true" />}
           </button>
         </div>
+        {/* Sub-page back button header */}
+        <MobileHeader />
 
         {/* Mobile Menu Overlay */}
         <AnimatePresence>
