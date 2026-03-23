@@ -216,7 +216,9 @@ export default function Settings() {
               className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-red-500" />
             <AlertDialogFooter>
               <AlertDialogCancel className="bg-white/5 text-white border-white/10 hover:bg-white/10">Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleDeleteAccount} disabled={deleteConfirmText.toLowerCase() !== "delete"} className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50">Delete Account</AlertDialogAction>
+              <AlertDialogAction onClick={handleDeleteAccount} disabled={deleteConfirmText.toLowerCase() !== "delete" || deleteAccountMutation.isPending} className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50">
+                {deleteAccountMutation.isPending ? "Deleting..." : "Delete Account"}
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
