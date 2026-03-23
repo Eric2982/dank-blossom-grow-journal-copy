@@ -15,7 +15,7 @@ const fields = [
   { key: "ph", label: "pH", type: "number", step: "0.1" },
 ];
 
-export default function AddReadingDialog({ open, onOpenChange, onSubmit, reading }) {
+export default function AddReadingDialog({ open, onOpenChange, onSubmit, reading, isPending }) {
   const [form, setForm] = useState({
     date: new Date().toISOString().slice(0, 16),
     temperature: "", humidity: "", ppfd: "", ec: "", vpd: "", ph: "",
@@ -114,8 +114,8 @@ export default function AddReadingDialog({ open, onOpenChange, onSubmit, reading
               placeholder="Observations..."
             />
           </div>
-          <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-500 text-white">
-            {reading ? "Update" : "Save"} Reading
+          <Button type="submit" disabled={isPending} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white">
+            {isPending ? "Saving..." : (reading ? "Update" : "Save") + " Reading"}
           </Button>
         </form>
       </DialogContent>
