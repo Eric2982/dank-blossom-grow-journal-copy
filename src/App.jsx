@@ -9,6 +9,7 @@ import { AnimatePresence } from 'framer-motion';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import { NavigationProvider } from '@/lib/NavigationContext';
+import AssetLinks from '@/components/AssetLinks';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
