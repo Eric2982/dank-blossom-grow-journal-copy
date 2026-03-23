@@ -23,5 +23,23 @@
         "B3:3F:FC:80:DB:13:17:AA:B3:1C:EF:64:30:2A:DE:32:A7:6F:17:CD:85:D6:7E:9D:19:CA:1A:B5:AB:F5:F0:B5"
       ]
     }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "web",
+      "site": "https://archetypal-grow-wise-log.base44.app"
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "web",
+      "site": "https://ju-j4z6.test-app.link"
+    }
   }
 ]
