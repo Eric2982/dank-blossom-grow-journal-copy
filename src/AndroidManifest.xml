@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.base6994e0c98fb6b9d1d4521dbd.app">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:label="Dank Blossom"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+
+            <!-- Standard launcher intent -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- App Links: Dashboard -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="archetypal-grow-wise-log.base44.app"
+                    android:pathPrefix="/Dashboard" />
+            </intent-filter>
+
+            <!-- App Links: Strains -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="archetypal-grow-wise-log.base44.app"
+                    android:pathPrefix="/StrainDetail" />
+            </intent-filter>
+
+            <!-- App Links: Community -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="archetypal-grow-wise-log.base44.app"
+                    android:pathPrefix="/Community" />
+            </intent-filter>
+
+            <!-- App Links: Premium -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="archetypal-grow-wise-log.base44.app"
+                    android:pathPrefix="/Premium" />
+            </intent-filter>
+
+            <!-- App Links: Chat -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="archetypal-grow-wise-log.base44.app"
+                    android:pathPrefix="/Chat" />
+            </intent-filter>
+
+            <!-- App Links: Summary -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="archetypal-grow-wise-log.base44.app"
+                    android:pathPrefix="/Summary" />
+            </intent-filter>
+
+            <!-- App Links: Analytics -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="archetypal-grow-wise-log.base44.app"
+                    android:pathPrefix="/Analytics" />
+            </intent-filter>
+
+            <!-- App Links: Challenges -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="archetypal-grow-wise-log.base44.app"
+                    android:pathPrefix="/Challenges" />
+            </intent-filter>
+
+            <!-- App Links: Learn -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="archetypal-grow-wise-log.base44.app"
+                    android:pathPrefix="/Learn" />
+            </intent-filter>
+
+            <!-- App Links: Nutrients -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="archetypal-grow-wise-log.base44.app"
+                    android:pathPrefix="/Nutrients" />
+            </intent-filter>
+
+            <!-- App Links: Store -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="archetypal-grow-wise-log.base44.app"
+                    android:pathPrefix="/Store" />
+            </intent-filter>
+
+            <!-- App Links: Settings -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="archetypal-grow-wise-log.base44.app"
+                    android:pathPrefix="/Settings" />
+            </intent-filter>
+
+            <!-- App Links: Root / Home -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="archetypal-grow-wise-log.base44.app"
+                    android:path="/" />
+            </intent-filter>
+
+        </activity>
+
+    </application>
+
+</manifest>
