@@ -1,7 +1,7 @@
 [{
   "relation": ["delegate_permission/common.get_login_creds"],
   "target" : { "namespace": "android_app", "package_name": "com.base6994e0c98fb6b9d1d4521dbd.app",
-               "sha256_cert_fingerprints": ["B3:3F:FC:80:DB:13:17:AA:B3:1C:EF:64:30:2A:DE:32:A7:6F:17:CD:85:D6:7E:9D:19:CA:1A:B5:AB:F5:F0:B5"] }
+               "sha256_cert_fingerprints": ["b3:3F:FC:80:DB:13:17:AA:B3:1C:EF:64:30:2A:DE:32:A7:6F:17:CD:85:D6:7E:9D:19:CA:1A:B5:AB:F5:F0:B5"] }
 },
 {
   "relation": ["delegate_permission/common.get_login_creds"],
