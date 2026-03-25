@@ -1,0 +1,48 @@
+{
+  "name": "Dank Blossom",
+  "short_name": "Dank Blossom",
+  "description": "Cannabis grow tracking and journal app",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "https://base44.com/logo_v2.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "id": "com.base6994e0c98fb6b9d1d4521dbd.app"
+    },
+    {
+      "platform": "play",
+      "id": "com.base69be6d60d8aa3924e66d8e69.app"
+    }
+  ],
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "url": "/",
+      "description": "View your grow dashboard"
+    },
+    {
+      "name": "Community",
+      "url": "/Community",
+      "description": "Join the grower community"
+    },
+    {
+      "name": "Chat",
+      "url": "/Chat",
+      "description": "Chat with the AI grow assistant"
+    }
+  ]
+}
