@@ -25,6 +25,9 @@ jobs:
       - name: 'Checkout'
         uses: 'actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332' # actions/checkout@v4
 
+      - name: 'Install Wrangler'
+        run: npm install -g wrangler@4.77.0
+
       - name: 'Deploy Cloudflare Worker'
         uses: 'cloudflare/wrangler-action@da0e0dfe58b7a431659754fdf3f186c529afbe65' # cloudflare/wrangler-action@v3
         with:
