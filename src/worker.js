@@ -1,5 +1,5 @@
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     const url = new URL(request.url);
 
     if (url.pathname === "/.well-known/assetlinks.json") {
@@ -28,7 +28,7 @@ export default {
       });
     }
 
-    // Pass all other requests through to the origin
-    return fetch(request);
+    // Pass all other requests through to the origin assets
+    return env.ASSETS.fetch(request);
   }
 };
