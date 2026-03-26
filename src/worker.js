@@ -28,7 +28,7 @@ export default {
       });
     }
 
-    // Pass all other requests through to the origin assets
-    return env.ASSETS.fetch(request);
+    // Pass all other requests through to the origin
+    return fetch(request);
   }
 };
