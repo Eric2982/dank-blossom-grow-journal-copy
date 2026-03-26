@@ -49,6 +49,8 @@ jobs:
           WRANGLER_SEND_METRICS: 'false'
           # (optional, extra safety in CI)
           CI: 'true'
+          # legacy/alternate env var name some versions still honor
+          WRANGLER_TELEMETRY_DISABLE: true
         with:
           apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
           accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
