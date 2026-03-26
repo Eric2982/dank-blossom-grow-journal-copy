@@ -58,7 +58,11 @@ jobs:
           echo "Most recent Wrangler log:"
           LOG="$(ls -1t "${HOME}/.config/.wrangler/logs/wrangler-*.log" 2>/dev/null | head -n 1)"
           echo "Log file: $LOG"
-          test -n "$LOG" && sed -n '1,200p' "$LOG" || true
+          if [ -n "$LOG" ]; then
+            echo "==== BEGIN WRANGLER LOG ===="
+            cat "$LOG"
+            echo "==== END WRANGLER LOG ===="
+          fi
 
       - name: 'Verify Worker deployment'
         # Pass GitHub Actions expressions into the shell as environment variables
