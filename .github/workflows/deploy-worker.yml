@@ -40,6 +40,16 @@ jobs:
           accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
           workingDirectory: 'src'
 
+      - name: 'Dump Wrangler logs (on failure)'
+        if: failure()
+        run: |
+          echo "Wrangler logs directory:"
+          ls -la /home/runner/.config/.wrangler/logs || true
+          echo "Most recent Wrangler log:"
+          LOG="$(ls -1t /home/runner/.config/.wrangler/logs/wrangler-*.log 2>/dev/null | head -n 1)"
+          echo "Log file: $LOG"
+          test -n "$LOG" && sed -n '1,200p' "$LOG" || true
+
       - name: 'Verify Worker deployment'
         run: |
           echo "Checking ${{ env.WORKER_VERIFY_URL }} ..."
