@@ -32,14 +32,23 @@ jobs:
       - name: 'Checkout'
         uses: 'actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332' # actions/checkout@v4
 
+      - name: 'Setup Node.js'
+        uses: 'actions/setup-node@v4'
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'src/package-lock.json'
+
+      - name: 'Install dependencies (includes Wrangler)'
+        working-directory: 'src'
+        run: npm ci
+
       - name: 'Deploy Cloudflare Worker'
         uses: 'cloudflare/wrangler-action@da0e0dfe58b7a431659754fdf3f186c529afbe65' # cloudflare/wrangler-action@v3
         with:
           apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
           accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
           workingDirectory: 'src'
-          # Let the action manage Wrangler installation; do not install globally.
-          wranglerVersion: '4.77.0'
 
       - name: 'Dump Wrangler logs (on failure)'
         if: failure()
