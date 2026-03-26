@@ -1,0 +1,7 @@
+name = "dank-blossom-assetlinks"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+routes = [
+  { pattern = "archetypal-grow-wise-log.base44.app/.well-known/assetlinks.json", zone_name = "base44.app" }
+]
