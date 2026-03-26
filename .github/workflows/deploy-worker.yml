@@ -50,7 +50,7 @@ jobs:
           accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
           workingDirectory: 'src'
 
-       - name: 'Dump Wrangler logs (on failure)'
+      - name: 'Dump Wrangler logs (on failure)'
         if: ${{ failure() }}
         shell: bash
         run: |
