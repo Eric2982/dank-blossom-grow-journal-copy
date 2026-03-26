@@ -50,17 +50,25 @@ jobs:
           accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
           workingDirectory: 'src'
 
-      - name: 'Dump Wrangler logs (on failure)'
-        if: failure()
+       - name: 'Dump Wrangler logs (on failure)'
+        if: ${{ failure() }}
+        shell: bash
         run: |
-          echo "Wrangler logs directory:"
-          ls -la "${HOME}/.config/.wrangler/logs" || true
-          echo "Most recent Wrangler log:"
-          LOG="$(ls -1t "${HOME}/.config/.wrangler/logs/wrangler-*.log" 2>/dev/null | head -n 1)"
-          echo "Log file: $LOG"
-          if [ -n "$LOG" ]; then
+          set -euxo pipefail
+
+          DIR="${HOME}/.config/.wrangler/logs"
+          echo "Wrangler logs directory: ${DIR}"
+          ls -la "${DIR}" || true
+
+          echo "All wrangler logs (newest first):"
+          ls -1t "${DIR}"/wrangler-*.log 2>/dev/null || true
+
+          LOG="$(ls -1t "${DIR}"/wrangler-*.log 2>/dev/null | head -n 1 || true)"
+          echo "Most recent Wrangler log: ${LOG:-<none found>}"
+
+          if [[ -n "${LOG}" && -f "${LOG}" ]]; then
             echo "==== BEGIN WRANGLER LOG ===="
-            cat "$LOG"
+            sed -n '1,200p' "${LOG}"
             echo "==== END WRANGLER LOG ===="
           fi
 
