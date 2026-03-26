@@ -1,0 +1,45 @@
+name: 'Deploy and Verify Cloudflare Worker'
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'src/worker.js'
+      - 'src/wrangler.toml'
+
+env:
+  WORKER_VERIFY_URL: 'https://archetypal-grow-wise-log.base44.app/.well-known/assetlinks.json'
+  # Allow up to 30 s for the worker to cold-start and respond after deployment.
+  VERIFY_TIMEOUT_SECONDS: '30'
+
+jobs:
+  deploy:
+    runs-on: 'ubuntu-latest'
+
+    permissions:
+      contents: 'read'
+
+    steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332' # actions/checkout@v4
+
+      - name: 'Deploy Cloudflare Worker'
+        uses: 'cloudflare/wrangler-action@da0e0dfe58b7a431659754fdf3f186c529afbe65' # cloudflare/wrangler-action@v3
+        with:
+          apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
+          accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
+          workingDirectory: 'src'
+
+      - name: 'Verify Worker deployment'
+        run: |
+          echo "Checking ${{ env.WORKER_VERIFY_URL }} ..."
+          STATUS=$(curl --silent --output /dev/null --write-out "%{http_code}" \
+            --max-time "${{ env.VERIFY_TIMEOUT_SECONDS }}" \
+            "${{ env.WORKER_VERIFY_URL }}")
+          echo "HTTP status: ${STATUS}"
+          if [ "${STATUS}" != "200" ]; then
+            echo "Worker verification failed — expected 200, got ${STATUS}"
+            exit 1
+          fi
+          echo "Worker is live and responding correctly."
