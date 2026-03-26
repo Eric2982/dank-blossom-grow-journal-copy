@@ -9,14 +9,21 @@ on:
       - 'src/wrangler.toml'
   workflow_dispatch:
 
+# Prevent concurrent deployments from racing against each other.
+concurrency:
+  group: deploy-worker-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   WORKER_VERIFY_URL: 'https://archetypal-grow-wise-log.base44.app/.well-known/assetlinks.json'
-  # Allow up to 30 s for the worker to cold-start and respond after deployment.
+  # Allow up to 30 s for each individual curl attempt during verification.
   VERIFY_TIMEOUT_SECONDS: '30'
 
 jobs:
   deploy:
-    runs-on: 'ubuntu-latest'
+    # Pin to a specific Ubuntu version to avoid unexpected breakage when
+    # GitHub silently upgrades 'ubuntu-latest'.
+    runs-on: 'ubuntu-22.04'
 
     permissions:
       contents: 'read'
@@ -25,38 +32,43 @@ jobs:
       - name: 'Checkout'
         uses: 'actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332' # actions/checkout@v4
 
-      - name: 'Setup Node.js'
-        uses: 'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020' # actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: 'Install Wrangler'
-        run: npm install -g wrangler@4.77.0
-
       - name: 'Deploy Cloudflare Worker'
         uses: 'cloudflare/wrangler-action@da0e0dfe58b7a431659754fdf3f186c529afbe65' # cloudflare/wrangler-action@v3
         with:
           apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
           accountId: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
           workingDirectory: 'src'
+          # Let the action manage Wrangler installation; do not install globally.
+          wranglerVersion: '4.77.0'
 
       - name: 'Dump Wrangler logs (on failure)'
         if: failure()
         run: |
           echo "Wrangler logs directory:"
-          ls -la /home/runner/.config/.wrangler/logs || true
+          ls -la "${HOME}/.config/.wrangler/logs" || true
           echo "Most recent Wrangler log:"
-          LOG="$(ls -1t /home/runner/.config/.wrangler/logs/wrangler-*.log 2>/dev/null | head -n 1)"
+          LOG="$(ls -1t "${HOME}/.config/.wrangler/logs/wrangler-*.log" 2>/dev/null | head -n 1)"
           echo "Log file: $LOG"
           test -n "$LOG" && sed -n '1,200p' "$LOG" || true
 
       - name: 'Verify Worker deployment'
+        # Pass GitHub Actions expressions into the shell as environment variables
+        # to avoid script-injection when the values are template-expanded.
+        env:
+          WORKER_VERIFY_URL: ${{ env.WORKER_VERIFY_URL }}
+          VERIFY_TIMEOUT_SECONDS: ${{ env.VERIFY_TIMEOUT_SECONDS }}
         run: |
-          echo "Checking ${{ env.WORKER_VERIFY_URL }} ..."
-          STATUS=$(curl --silent --output /dev/null --write-out "%{http_code}" \
-            --max-time "${{ env.VERIFY_TIMEOUT_SECONDS }}" \
-            "${{ env.WORKER_VERIFY_URL }}")
-          echo "HTTP status: ${STATUS}"
+          echo "Checking ${WORKER_VERIFY_URL} ..."
+          STATUS="000"
+          for i in 1 2 3 4 5; do
+            STATUS=$(curl --silent --output /dev/null --write-out "%{http_code}" \
+              --max-time "${VERIFY_TIMEOUT_SECONDS}" \
+              "${WORKER_VERIFY_URL}")
+            echo "Attempt ${i}: HTTP status ${STATUS}"
+            [ "${STATUS}" = "200" ] && break
+            echo "Not ready yet — retrying in 10 s..."
+            sleep 10
+          done
           if [ "${STATUS}" != "200" ]; then
             echo "Worker verification failed — expected 200, got ${STATUS}"
             exit 1
