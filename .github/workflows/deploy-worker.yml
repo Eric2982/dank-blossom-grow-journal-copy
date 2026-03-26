@@ -44,7 +44,9 @@ jobs:
         run: npm ci
 
       - name: 'Deploy Cloudflare Worker'
+        id: deploy
         uses: 'cloudflare/wrangler-action@da0e0dfe58b7a431659754fdf3f186c529afbe65' # cloudflare/wrangler-action@v3
+        continue-on-error: true
         env:
           WRANGLER_SEND_METRICS: 'false'
           # (optional, extra safety in CI)
@@ -57,7 +59,7 @@ jobs:
           workingDirectory: 'src'
 
       - name: 'Dump Wrangler logs (on failure)'
-        if: ${{ failure() }}
+        if: ${{ steps.deploy.outcome == 'failure' }}
         shell: bash
         run: |
           set -euxo pipefail
@@ -77,6 +79,13 @@ jobs:
             sed -n '1,200p' "${LOG}"
             echo "==== END WRANGLER LOG ===="
           fi
+
+      - name: 'Fail if deploy failed'
+        if: ${{ steps.deploy.outcome == 'failure' }}
+        shell: bash
+        run: |
+          echo "Deploy step failed — marking job as failed."
+          exit 1
 
       - name: 'Verify Worker deployment'
         # Pass GitHub Actions expressions into the shell as environment variables
