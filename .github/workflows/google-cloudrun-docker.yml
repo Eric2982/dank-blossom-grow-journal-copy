@@ -62,7 +62,6 @@ jobs:
         with:
           workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
           service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
-          credentials_json: '${{ secrets.GCP_SA_KEY }}'
           project_id: '${{ env.PROJECT_ID }}'
 
       # BEGIN - Docker auth and build
