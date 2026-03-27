@@ -127,11 +127,11 @@ jobs:
           PROJECT: '${{ env.PROJECT_ID || steps.auth.outputs.project_id }}'
           SERVICE: '${{ env.SERVICE }}'
         run: |
+          DESCRIBE_EXIT=0
           DESCRIBE_OUTPUT=$(gcloud artifacts repositories describe "$REPOSITORY" \
             --location="$REGION" \
             --project="$PROJECT" \
-            --format="value(name)" 2>&1)
-          DESCRIBE_EXIT=$?
+            --format="value(name)" 2>&1) || DESCRIBE_EXIT=$?
           if [ "$DESCRIBE_EXIT" -eq 0 ]; then
             echo "Artifact Registry repository already exists."
           elif echo "$DESCRIBE_OUTPUT" | grep -qi "NOT_FOUND\|not found"; then
