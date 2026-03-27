@@ -62,6 +62,38 @@ jobs:
       #
       # If you already have a container image, you can omit these steps.
 
+      # Normalize the GCP_REGION and GAR_REPOSITORY secrets before validation.
+      # A common mistake is to store the full registry hostname in one or both
+      # fields (e.g. "us-east4-docker.pkg.dev" instead of "us-east4", or the
+      # same hostname in GAR_REPOSITORY instead of a plain repository name).
+      # This step auto-corrects those values and emits a notice so the user
+      # knows to update the secrets.
+      - name: 'Normalize GCP secret values'
+        env:
+          REGION: '${{ env.REGION }}'
+          REPOSITORY: '${{ env.REPOSITORY }}'
+        run: |
+          REGION_VAL="$REGION"
+          REPOSITORY_VAL="$REPOSITORY"
+
+          # If GCP_REGION looks like a registry hostname, strip the trailing suffix.
+          if [[ "$REGION_VAL" == *-docker.pkg.dev ]]; then
+            REGION_VAL="${REGION_VAL%-docker.pkg.dev}"
+            echo "::warning::GCP_REGION contained '-docker.pkg.dev' suffix; normalized to '${REGION_VAL}'. Update the GCP_REGION secret to just the region (e.g. us-east4) to remove this warning."
+            echo "REGION=${REGION_VAL}" >> "$GITHUB_ENV"
+          fi
+
+          # If GAR_REPOSITORY contains dots or slashes it is not a valid
+          # Artifact Registry repository name.  Fall back to the GitHub
+          # repository name (owner-less) which is always a safe default.
+          if [[ "$REPOSITORY_VAL" == *"."* || "$REPOSITORY_VAL" == *"/"* ]]; then
+            REPOSITORY_VAL="${GITHUB_REPOSITORY##*/}"
+            echo "::warning::GAR_REPOSITORY contained dots or slashes (was set to a hostname or URL instead of a repository name); using GitHub repository name '${REPOSITORY_VAL}' as the Artifact Registry repository name. Update the GAR_REPOSITORY secret to just the repository name (e.g. my-app) to remove this warning."
+            echo "REPOSITORY=${REPOSITORY_VAL}" >> "$GITHUB_ENV"
+          fi
+
+          echo "Using REGION=${REGION_VAL}, REPOSITORY=${REPOSITORY_VAL}"
+
       # Validate that the GCP_REGION secret contains a plain region identifier
       # (e.g. "us-east4"), not a full registry hostname.  A common mistake is
       # to copy the full registry URL (e.g. "us-east4-docker.pkg.dev") into the
