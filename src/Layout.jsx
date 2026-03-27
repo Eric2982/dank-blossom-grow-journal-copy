@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, LogOut, Home, MessageSquare, Users, BookOpen, Leaf, Zap, Trophy, ShoppingBag, Settings, Crown, BarChart2 } from "lucide-react";
 import { base44 } from "@/api/base44Client";
