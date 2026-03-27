@@ -52,16 +52,47 @@ jobs:
       - name: 'Checkout'
         uses: 'actions/checkout@v4'
 
-      # Configure Workload Identity Federation and generate an access token.
+      # Detect which Google Cloud authentication method has been configured.
       #
-      # See https://github.com/google-github-actions/auth for more options,
-      # including authenticating via a JSON credentials file.
+      # Option A – Workload Identity Federation (keyless, recommended):
+      #   Set secrets:  WORKLOAD_IDENTITY_PROVIDER  and  GCP_SERVICE_ACCOUNT
+      #   See https://github.com/google-github-actions/auth#preferred-direct-workload-identity-federation
+      #
+      # Option B – Service Account JSON key (simpler to set up):
+      #   Set secret:   GCP_SA_KEY  (the full JSON key file contents)
+      #   See https://github.com/google-github-actions/auth#authenticating-via-service-account-key-json
+      - name: 'Detect auth method'
+        id: 'auth-method'
+        env:
+          WIF: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+          SA_KEY: '${{ secrets.GCP_SA_KEY }}'
+        run: |
+          if [ -n "$WIF" ]; then
+            echo "method=wif" >> "$GITHUB_OUTPUT"
+          elif [ -n "$SA_KEY" ]; then
+            echo "method=json" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::No Google Cloud credentials found. Set either WORKLOAD_IDENTITY_PROVIDER + GCP_SERVICE_ACCOUNT (Workload Identity Federation) or GCP_SA_KEY (Service Account JSON key) in the repository secrets."
+            exit 1
+          fi
+
+      # Option A: authenticate with Workload Identity Federation
       - id: 'auth'
-        name: 'Authenticate to Google Cloud'
+        name: 'Authenticate to Google Cloud (Workload Identity Federation)'
+        if: steps.auth-method.outputs.method == 'wif'
         uses: 'google-github-actions/auth@v2'
         with:
           workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
           service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+          project_id: '${{ env.PROJECT_ID }}'
+
+      # Option B: authenticate with a Service Account JSON key
+      - id: 'auth-json'
+        name: 'Authenticate to Google Cloud (Service Account JSON key)'
+        if: steps.auth-method.outputs.method == 'json'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
           project_id: '${{ env.PROJECT_ID }}'
 
       # BEGIN - Docker auth and build
