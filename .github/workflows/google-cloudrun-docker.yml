@@ -148,9 +148,18 @@ jobs:
           fi
 
       - name: 'Build and Push Container'
+        env:
+          NPM_TOKEN: '${{ secrets.NPM_TOKEN }}'
         run: |-
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID || steps.auth.outputs.project_id }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
-          docker build --tag "${DOCKER_TAG}" .
+          # Pass the npm auth token as a BuildKit secret when it is set so that
+          # npm ci can authenticate inside the build.  The secret is never
+          # written into an image layer.
+          NPM_SECRET_ARGS=()
+          if [ -n "${NPM_TOKEN}" ]; then
+            NPM_SECRET_ARGS=(--secret id=npm_token,env=NPM_TOKEN)
+          fi
+          docker build "${NPM_SECRET_ARGS[@]}" --tag "${DOCKER_TAG}" .
           docker push "${DOCKER_TAG}"
 
       # END - Docker auth and build
