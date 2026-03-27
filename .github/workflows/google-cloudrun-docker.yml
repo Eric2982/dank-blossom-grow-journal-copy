@@ -52,25 +52,51 @@ jobs:
       - name: 'Checkout'
         uses: 'actions/checkout@v4'
 
+      # Check whether the required GCP secrets are present before attempting
+      # authentication. Secrets are not injected for fork-triggered workflows,
+      # so this guard prevents a hard failure in those cases.
+      - name: 'Check GCP secrets'
+        id: secrets-check
+        env:
+          WIF_PROVIDER: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+          SA_KEY: '${{ secrets.GCP_SA_KEY }}'
+          GCP_PROJECT: '${{ secrets.GCP_PROJECT_ID }}'
+        run: |
+          if [ -n "$WIF_PROVIDER" ] || [ -n "$SA_KEY" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "Neither WORKLOAD_IDENTITY_PROVIDER nor GCP_SA_KEY secret is set — skipping GCP deployment."
+          fi
+
       # Configure Workload Identity Federation and generate an access token.
       #
       # See https://github.com/google-github-actions/auth for more options,
       # including authenticating via a JSON credentials file.
+      #
+      # Supports two mutually exclusive auth methods (set exactly one):
+      #   - Workload Identity Federation: set the WORKLOAD_IDENTITY_PROVIDER
+      #     secret (and optionally GCP_SERVICE_ACCOUNT).
+      #   - Service account key JSON: set the GCP_SA_KEY secret.
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
+        if: steps.secrets-check.outputs.available == 'true'
         uses: 'google-github-actions/auth@v2'
         with:
           workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
           service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
           project_id: '${{ env.PROJECT_ID }}'
 
       # BEGIN - Docker auth and build
       #
       # If you already have a container image, you can omit these steps.
       - name: 'Docker Auth'
+        if: steps.secrets-check.outputs.available == 'true'
         run: gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
 
       - name: 'Build and Push Container'
+        if: steps.secrets-check.outputs.available == 'true'
         run: |-
           DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
           docker build --tag "${DOCKER_TAG}" .
@@ -80,6 +106,7 @@ jobs:
 
       - id: 'deploy'
         name: 'Deploy to Cloud Run'
+        if: steps.secrets-check.outputs.available == 'true'
         uses: 'google-github-actions/deploy-cloudrun@v2'
         with:
           service: '${{ env.SERVICE }}'
@@ -89,5 +116,6 @@ jobs:
 
       # If required, use the Cloud Run URL output in later steps
       - name: 'Show output'
+        if: steps.secrets-check.outputs.available == 'true'
         run: |-
           echo "${{ steps.deploy.outputs.url }}"
