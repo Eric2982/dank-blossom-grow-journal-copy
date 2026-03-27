@@ -62,13 +62,14 @@ jobs:
         with:
           workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
           service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
           project_id: '${{ env.PROJECT_ID }}'
 
       # BEGIN - Docker auth and build
       #
       # If you already have a container image, you can omit these steps.
       - name: 'Docker Auth'
-        run: gcloud auth configure-docker 'us-east4-docker.pkg.dev'
+        run: gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
 
       - name: 'Build and Push Container'
         run: |-
