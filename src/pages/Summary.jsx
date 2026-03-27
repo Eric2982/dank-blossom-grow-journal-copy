@@ -5,8 +5,6 @@ import { Thermometer, Droplets, Sun, Zap, Wind, FlaskConical, Activity, ArrowLef
 import StatCard from "../components/grow/StatCard";
 import PullToRefresh from "../components/PullToRefresh";
 import { useNavigation } from "@/lib/NavigationContext";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 
 export default function Summary() {
   const queryClient = useQueryClient();
