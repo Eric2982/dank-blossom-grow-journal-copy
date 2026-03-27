@@ -61,8 +61,59 @@ jobs:
       # BEGIN - Docker auth and build
       #
       # If you already have a container image, you can omit these steps.
+
+      # Validate that the GCP_REGION secret contains a plain region identifier
+      # (e.g. "us-east4"), not a full registry hostname.  A common mistake is
+      # to copy the full registry URL (e.g. "us-east4-docker.pkg.dev") into the
+      # secret, which appends "-docker.pkg.dev" a second time and produces an
+      # invalid image reference.  Likewise GAR_REPOSITORY must be a simple
+      # repository name with no dots or slashes.
+      - name: 'Validate GCP secrets format'
+        env:
+          REGION: '${{ env.REGION }}'
+          REPOSITORY: '${{ env.REPOSITORY }}'
+        run: |
+          if [[ "$REGION" == *"-docker.pkg.dev"* || "$REGION" == *"/"* ]]; then
+            echo "::error::GCP_REGION secret looks like a registry URL instead of a region name (e.g. us-east4). Update the secret to contain only the region identifier."
+            exit 1
+          fi
+          if [[ "$REPOSITORY" == *"."* || "$REPOSITORY" == *"/"* ]]; then
+            echo "::error::GAR_REPOSITORY secret contains dots or slashes, which are not valid in an Artifact Registry repository name. It should be a simple name such as 'my-app'. A common mistake is to set it to the registry hostname (e.g. us-east4-docker.pkg.dev) — use only the repository name portion."
+            exit 1
+          fi
+          echo "Secret format validation passed."
+
       - name: 'Docker Auth'
         run: gcloud auth configure-docker '${{ env.REGION }}-docker.pkg.dev'
+
+      # Ensure the Artifact Registry Docker repository exists before pushing.
+      # The repository must be created in GCP before images can be pushed to it.
+      - name: 'Ensure Artifact Registry repository exists'
+        env:
+          REPOSITORY: '${{ env.REPOSITORY }}'
+          REGION: '${{ env.REGION }}'
+          PROJECT: '${{ env.PROJECT_ID || steps.auth.outputs.project_id }}'
+          SERVICE: '${{ env.SERVICE }}'
+        run: |
+          DESCRIBE_OUTPUT=$(gcloud artifacts repositories describe "$REPOSITORY" \
+            --location="$REGION" \
+            --project="$PROJECT" \
+            --format="value(name)" 2>&1)
+          DESCRIBE_EXIT=$?
+          if [ "$DESCRIBE_EXIT" -eq 0 ]; then
+            echo "Artifact Registry repository already exists."
+          elif echo "$DESCRIBE_OUTPUT" | grep -qi "NOT_FOUND\|not found"; then
+            echo "Repository not found — creating it now..."
+            gcloud artifacts repositories create "$REPOSITORY" \
+              --repository-format=docker \
+              --location="$REGION" \
+              --project="$PROJECT" \
+              --description="Docker repository for ${SERVICE}"
+          else
+            echo "Failed to check repository existence:"
+            echo "$DESCRIBE_OUTPUT"
+            exit "$DESCRIBE_EXIT"
+          fi
 
       - name: 'Build and Push Container'
         run: |-
