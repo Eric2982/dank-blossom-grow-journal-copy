@@ -15,5 +15,5 @@ export default defineConfig({
     navigationNotifier: true,
     analyticsTracker: true,
     visualEditAgent: true
-  }), react(), cloudflare()]
+  }), react(), ...(process.env.PAGES ? [] : [cloudflare()])]
 });
