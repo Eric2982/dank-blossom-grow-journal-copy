@@ -31,7 +31,7 @@ const assetlinks = [
     relation: ["delegate_permission/common.handle_all_urls"],
     target: {
       namespace: "web",
-      site: "https://archetypal-grow-wise-log.base44.app"
+      site: "https://dankblossom.app"
     }
   }
 ];

@@ -2,7 +2,7 @@
 <resources>
     <string name="asset_statements" translatable="false">
 [{
-  \"include\": \"https://archetypal-grow-wise-log.base44.app/.well-known/assetlinks.json\"
+  \"include\": \"https://dankblossom.app/.well-known/assetlinks.json\"
 }]
     </string>
 </resources>
