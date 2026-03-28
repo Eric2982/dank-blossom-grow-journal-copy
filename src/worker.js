@@ -28,7 +28,9 @@ export default {
       });
     }
 
-    // Pass all other requests through to the origin
-    return fetch(request);
+    // Redirect all other requests to the canonical domain
+    const redirectUrl = new URL(request.url);
+    redirectUrl.hostname = "dankblossom.app";
+    return Response.redirect(redirectUrl.toString(), 301);
   }
 };
