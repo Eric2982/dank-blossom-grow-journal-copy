@@ -11,7 +11,7 @@ const assetlinks = [
   },
   {
     "relation": ["delegate_permission/common.get_login_creds"],
-    "target": { "namespace": "web", "site": "https://archetypal-grow-wise-log.base44.app" }
+    "target": { "namespace": "web", "site": "https://dankblossom.app" }
   }
 ];
 
