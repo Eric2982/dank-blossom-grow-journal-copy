@@ -65,12 +65,15 @@ Deno.serve(async (req) => {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { integrityToken, packageName } = await req.json();
+    const { integrityToken, packageName, nonce } = await req.json();
     if (!integrityToken || !packageName) {
       return Response.json({ error: "integrityToken and packageName are required" }, { status: 400 });
     }
 
     const serviceAccountJson = Deno.env.get("GOOGLE_SERVICE_ACCOUNT_JSON");
+    if (!serviceAccountJson) {
+      return Response.json({ error: "Server not configured: missing GOOGLE_SERVICE_ACCOUNT_JSON" }, { status: 503 });
+    }
     const accessToken = await getAccessToken(serviceAccountJson);
 
     // Call Play Integrity API to decode and verify the token
@@ -94,6 +97,16 @@ Deno.serve(async (req) => {
     const verdict = await integrityRes.json();
     const tokenPayload = verdict.tokenPayloadExternal;
 
+    // Validate nonce to prevent token replay attacks
+    if (nonce) {
+      const tokenNonce = tokenPayload?.requestDetails?.nonce;
+      if (!tokenNonce || tokenNonce !== nonce) {
+        return Response.json({
+          error: "Nonce mismatch: integrity token does not match this request",
+        }, { status: 400 });
+      }
+    }
+
     // Check app recognition
     const appVerdict = tokenPayload?.appIntegrity?.appRecognitionVerdict;
     if (appVerdict !== "PLAY_RECOGNIZED") {
@@ -104,13 +117,16 @@ Deno.serve(async (req) => {
       }, { status: 403 });
     }
 
-    // Check device integrity
+    // Check device integrity — require at least MEETS_DEVICE_INTEGRITY
+    // (consistent with the client-side usePlayIntegrity.js check).
     const deviceVerdicts = tokenPayload?.deviceIntegrity?.deviceRecognitionVerdict || [];
-    const meetsBasic = deviceVerdicts.includes("MEETS_BASIC_INTEGRITY");
-    if (!meetsBasic) {
+    const meetsDevice =
+      deviceVerdicts.includes("MEETS_DEVICE_INTEGRITY") ||
+      deviceVerdicts.includes("MEETS_STRONG_INTEGRITY");
+    if (!meetsDevice) {
       return Response.json({
         allowed: false,
-        reason: "Device does not meet basic integrity",
+        reason: "Device does not meet device integrity requirements",
         verdict: tokenPayload,
       }, { status: 403 });
     }

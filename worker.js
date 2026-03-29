@@ -181,6 +181,14 @@ async function handleVerify(request, env) {
       accessToken
     );
 
+    // Verify that the nonce embedded in the token matches the one sent by the
+    // client.  This binding prevents a valid token from a previous request
+    // being replayed against a different session.
+    const tokenNonce = verdict?.requestDetails?.nonce;
+    if (!tokenNonce || tokenNonce !== nonce) {
+      return jsonError('Nonce mismatch: integrity token does not match this request.', 400);
+    }
+
     // Surface only the verdict fields (do not echo back the raw JWT)
     return jsonResponse(verdict, 200);
   } catch (err) {
