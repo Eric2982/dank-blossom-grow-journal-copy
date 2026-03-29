@@ -113,7 +113,7 @@ export default function Layout({ children, currentPageName }) {
       {/* Main Content */}
       <main className="flex-1 overflow-hidden md:ml-64 pb-20 md:pb-0 flex flex-col">
         {/* Mobile Header - top bar (always visible on mobile) */}
-        <div className="md:hidden sticky top-0 z-30 bg-white/[0.02] border-b border-white/5 px-4 py-3 flex items-center justify-between">
+        <div className="md:hidden sticky top-0 z-30 bg-white/[0.02] border-b border-white/5 px-4 py-3 flex items-center justify-between" style={{ paddingTop: "max(0.75rem, env(safe-area-inset-top))" }}>
           <h1 className="text-lg font-light text-white">Dank Blossom</h1>
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -153,7 +153,8 @@ export default function Layout({ children, currentPageName }) {
               animate={{ x: 0 }}
               exit={{ x: -256 }}
               transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-              className="fixed left-0 top-12 h-[calc(100vh-3rem-80px)] w-64 bg-zinc-900 border-r border-white/5 z-40 md:hidden overflow-y-auto"
+              className="fixed left-0 top-0 h-full w-64 bg-zinc-900 border-r border-white/5 z-40 md:hidden overflow-y-auto"
+              style={{ paddingTop: "max(3rem, calc(env(safe-area-inset-top) + 3rem))", paddingBottom: "max(5rem, calc(env(safe-area-inset-bottom) + 5rem))" }}
             >
               <div className="p-4 space-y-1">
                 {sidebarNavItems.map((item) => {

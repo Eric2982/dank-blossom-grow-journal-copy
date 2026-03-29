@@ -86,9 +86,18 @@
     @apply select-none;
   }
 
+  html {
+    overscroll-behavior: none;
+  }
+
   body {
     @apply bg-background text-foreground;
+    overscroll-behavior: none;
     padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+
+  #root {
+    overscroll-behavior: none;
   }
 
   @supports (padding: max(0px)) {
