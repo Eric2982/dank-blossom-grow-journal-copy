@@ -17,51 +17,6 @@
   <application>
 
     <!-- ============================================================
-         Package: com.base69be6d60d8aa3924e66d8e69.app
-         Activity: com.wix.MainActivity
-         ============================================================ -->
-    <activity
-        android:name="com.wix.MainActivity"
-        android:exported="true">
-
-      <!-- Domain: dankblossom.app -->
-      <intent-filter android:autoVerify="true">
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <!-- http delegates to https; do not add other schemes -->
-        <data android:scheme="http" />
-        <data android:scheme="https" />
-        <data android:host="dankblossom.app" />
-        <data android:host="*.dankblossom.app" />
-      </intent-filter>
-
-      <!-- Domain: archetypal-grow-wise-log.base44.app -->
-      <intent-filter android:autoVerify="true">
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <!-- http delegates to https; do not add other schemes -->
-        <data android:scheme="http" />
-        <data android:scheme="https" />
-        <data android:host="archetypal-grow-wise-log.base44.app" />
-        <data android:host="*.archetypal-grow-wise-log.base44.app" />
-      </intent-filter>
-
-      <!-- Domain: ju-j4z6.test-app.link -->
-      <intent-filter android:autoVerify="true">
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="http" />
-        <data android:scheme="https" />
-        <data android:host="ju-j4z6.test-app.link" />
-        <data android:host="*.ju-j4z6.test-app.link" />
-      </intent-filter>
-
-    </activity>
-
-    <!-- ============================================================
          Package: com.base6994e0c98fb6b9d1d4521dbd.app
          Activity: com.wix.MainActivity
          ============================================================ -->
@@ -74,6 +29,7 @@
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
+        <!-- http delegates to https; do not add other schemes -->
         <data android:scheme="http" />
         <data android:scheme="https" />
         <data android:host="dankblossom.app" />
@@ -85,6 +41,7 @@
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
+        <!-- http delegates to https; do not add other schemes -->
         <data android:scheme="http" />
         <data android:scheme="https" />
         <data android:host="archetypal-grow-wise-log.base44.app" />
