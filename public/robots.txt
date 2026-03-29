@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Allow: /.well-known/
+
+Sitemap: https://dankblossom.app/sitemap.xml

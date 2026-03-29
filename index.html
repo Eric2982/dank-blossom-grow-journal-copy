@@ -11,7 +11,22 @@
       gtag('config', 'G-LSJQKS3KR6');
     </script>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="https://base44.com/logo_v2.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      // Restore route after GitHub Pages 404 redirect.
+      (function () {
+        var redirect = sessionStorage.getItem('spa-redirect');
+        if (redirect) {
+          sessionStorage.removeItem('spa-redirect');
+          try {
+            var url = new URL(redirect);
+            if (url.origin === location.origin && url.pathname !== '/') {
+              window.history.replaceState(null, '', url.pathname + url.search + url.hash);
+            }
+          } catch (e) {}
+        }
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="google-site-verification" content="AzQHhNLz4UStASJBDHnmIwrXlUbCNhTC7xYBG98YzH0" />
