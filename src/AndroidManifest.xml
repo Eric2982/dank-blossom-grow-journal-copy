@@ -1,4 +1,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <!--
+    INTERNET is required for the web app and for the Play Integrity token
+    request to reach Google Play servers.
+  -->
+  <uses-permission android:name="android.permission.INTERNET" />
+
+  <!--
+    Android 11+ package visibility: the Play Integrity API needs to query
+    the Google Play Store (com.android.vending) to obtain an integrity token.
+  -->
+  <queries>
+    <package android:name="com.android.vending" />
+  </queries>
+
   <application>
 
     <!-- ============================================================
