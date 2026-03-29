@@ -8,9 +8,8 @@
  * 1. generateNonce()           → cryptographically random base64url nonce
  * 2. requestIntegrityToken()   → calls the Android JS bridge injected by
  *                                PlayIntegrityBridge.java; invokes the
- *                                StandardIntegrityTokenProvider returned by
- *                                prepareIntegrityToken() and returns the
- *                                encrypted token from Google Play
+ *                                Classic Integrity API via IntegrityManager
+ *                                and returns the encrypted token from Google Play
  * 3. verifyIntegrityToken()    → POST the token + nonce to the Cloudflare
  *                                Worker endpoint which decodes it via
  *                                Google's Play Integrity API and returns the
@@ -87,9 +86,9 @@ export function hasAndroidBridge() {
 /**
  * Requests a Play Integrity token from the Android native bridge.
  *
- * The bridge (PlayIntegrityBridge.java) calls the StandardIntegrityTokenProvider
- * prepared via StandardIntegrityManager.prepareIntegrityToken() and returns the
- * encrypted token.
+ * The bridge (PlayIntegrityBridge.java) uses the Classic Integrity API,
+ * calling IntegrityManager.requestIntegrityToken() with the nonce and
+ * returning the encrypted token.
  *
  * @param {string} nonce - Base64url-encoded request hash from generateNonce()
  * @returns {Promise<string>} encrypted integrity token
