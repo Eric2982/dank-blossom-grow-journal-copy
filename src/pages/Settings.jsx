@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { createPageUrl } from "../components/utils";
 import PullToRefresh from "../components/PullToRefresh";
 import { format } from "date-fns";
+import { IntegrityBadge } from "@/components/IntegrityGuard";
 
 export default function Settings() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -195,7 +196,7 @@ export default function Settings() {
             <div className="flex items-center gap-3"><Shield className="w-5 h-5 text-blue-400" /><div><h3 className="text-white font-medium">Regulatory Compliance</h3><p className="text-white/40 text-sm">Legal framework</p></div></div>
             <ChevronDown className={`w-5 h-5 text-white/40 transition-transform ${showRegulatory ? 'rotate-180' : ''}`} />
           </button>
-          {showRegulatory && <div className="pt-4 border-t border-white/5 mt-4 text-white/60 text-sm"><p>Dank Blossom is an informational tool only. Users are solely responsible for compliance with all applicable laws. Age verification required (21+).</p></div>}
+          {showRegulatory && <div className="pt-4 border-t border-white/5 mt-4 text-white/60 text-sm space-y-3"><p>Dank Blossom is an informational tool only. Users are solely responsible for compliance with all applicable laws. Age verification required (21+).</p><div className="flex items-center gap-2 pt-1"><span className="text-white/30 text-xs">App verification:</span><IntegrityBadge /></div></div>}
         </Card>
 
         <Card className="bg-red-950/20 border-red-500/20 p-6">

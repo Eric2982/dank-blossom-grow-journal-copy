@@ -9,6 +9,7 @@ import { AnimatePresence } from 'framer-motion';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import { NavigationProvider } from '@/lib/NavigationContext';
+import IntegrityGuard from '@/components/IntegrityGuard';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -74,7 +75,9 @@ function App() {
       <QueryClientProvider client={queryClientInstance}>
         <Router>
           <NavigationProvider>
-            <AuthenticatedApp />
+            <IntegrityGuard>
+              <AuthenticatedApp />
+            </IntegrityGuard>
           </NavigationProvider>
         </Router>
         <Toaster />
