@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Allow: /.well-known/
 
-Sitemap: https://archetypal-grow-wise-log.base44.app/sitemap.xml
+Sitemap: https://dankblossom.app/sitemap.xml
