@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.base6994e0c98fb6b9d1d4521dbd.app">
+
+    <!--
+        INTERNET is required for the WebView to load the React SPA and for the
+        Play Integrity token request to reach Google Play servers.
+    -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!--
+        Android 11+ package visibility: the Play Integrity API needs to query
+        the Google Play Store (com.android.vending) to obtain an integrity token.
+        Without this declaration the call to IntegrityManagerFactory.create()
+        will fail silently on API 30+ devices.
+    -->
+    <queries>
+        <package android:name="com.android.vending" />
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="false">
+
+        <activity
+            android:name="com.wix.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
+
+            <!-- App entry-point -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!--
+                Android App Links for dankblossom.app.
+                android:autoVerify="true" triggers automatic verification against the
+                /.well-known/assetlinks.json file on the domain so that deep-links
+                open directly in the app rather than the browser.
+            -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="dankblossom.app" />
+                <data android:scheme="https" android:host="*.dankblossom.app" />
+            </intent-filter>
+
+        </activity>
+
+    </application>
+
+</manifest>
