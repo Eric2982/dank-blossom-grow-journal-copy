@@ -3,7 +3,3 @@
 build/
 local.properties
 
-# Generated Gradle wrapper (downloaded at build time)
-gradle/wrapper/gradle-wrapper.jar
-gradlew
-gradlew.bat
