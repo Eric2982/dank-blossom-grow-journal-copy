@@ -33,8 +33,18 @@
 /** Backend endpoint that decodes and verifies the integrity token. */
 const VERIFY_ENDPOINT = '/api/play-integrity/verify';
 
-/** Timeout for the Android bridge call (milliseconds). */
-const BRIDGE_TIMEOUT_MS = 15_000;
+/**
+ * Timeout for a single Android bridge call (milliseconds).
+ * The Classic Play Integrity API can take up to 30 s on slow networks or
+ * on the first call after installation, so allow adequate headroom.
+ */
+const BRIDGE_TIMEOUT_MS = 30_000;
+
+/** Maximum number of additional attempts after the first, for timeout errors. */
+const MAX_RETRIES = 2;
+
+/** Base delay between retry attempts (milliseconds); doubles on each retry. */
+const RETRY_BASE_DELAY_MS = 1_000;
 
 // ─── Nonce ────────────────────────────────────────────────────────────────────
 
@@ -109,7 +119,9 @@ export function requestIntegrityToken(nonce) {
     // Auto-clean and timeout guard
     const timer = setTimeout(() => {
       delete window.__playIntegrityCallbacks[callbackId];
-      reject(new Error('Play Integrity token request timed out'));
+      const err = new Error('Play Integrity token request timed out');
+      err.code = 'PLAY_INTEGRITY_TIMEOUT';
+      reject(err);
     }, BRIDGE_TIMEOUT_MS);
 
     window.__playIntegrityCallbacks[callbackId] = {
@@ -174,6 +186,9 @@ export async function verifyIntegrityToken(token, nonce) {
  * function resolves with { available: false } instead of throwing, allowing
  * the app to degrade gracefully on non-Android environments.
  *
+ * Timeout errors from the Android bridge are retried up to MAX_RETRIES times
+ * with exponential back-off before the error is surfaced to the caller.
+ *
  * @returns {Promise<object>} integrity verdict or { available: false }
  */
 export async function performIntegrityCheck() {
@@ -181,8 +196,26 @@ export async function performIntegrityCheck() {
     return { available: false };
   }
 
-  const nonce = generateNonce();
-  const token = await requestIntegrityToken(nonce);
-  const verdict = await verifyIntegrityToken(token, nonce);
-  return { available: true, ...verdict };
+  let lastError;
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    if (attempt > 0) {
+      // Exponential back-off: 1 s, 2 s, …
+      await new Promise((res) => setTimeout(res, RETRY_BASE_DELAY_MS * (2 ** (attempt - 1))));
+    }
+
+    try {
+      const nonce = generateNonce();
+      const token = await requestIntegrityToken(nonce);
+      const verdict = await verifyIntegrityToken(token, nonce);
+      return { available: true, ...verdict };
+    } catch (err) {
+      lastError = err;
+      // Only retry transient timeout failures; surface all other errors immediately.
+      if (err.code !== 'PLAY_INTEGRITY_TIMEOUT') {
+        throw err;
+      }
+    }
+  }
+
+  throw lastError;
 }
