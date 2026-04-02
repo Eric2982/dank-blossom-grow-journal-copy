@@ -35,7 +35,34 @@
         <data android:host="dankblossom.app" />
         <data android:host="*.dankblossom.app" />
       </intent-filter>
+      
+    <activity
+            android:name="com.dankblossom.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
 
+            <!-- App entry-point -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!--
+                Android App Links for dankblossom.app.
+                android:autoVerify="true" triggers automatic verification against the
+                /.well-known/assetlinks.json file on the domain so that deep-links
+                open directly in the app rather than the browser.
+            -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="dankblossom.app" />
+                <data android:scheme="https" android:host="*.dankblossom.app" />
+            </intent-filter>
+
+        </activity>
     </activity>
 
     <meta-data android:name="asset_statements" android:resource="@string/asset_statements" />
