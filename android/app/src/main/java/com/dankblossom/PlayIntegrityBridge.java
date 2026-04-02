@@ -35,10 +35,12 @@ public class PlayIntegrityBridge {
     private final Context context;
     private final WebView webView;
     private final IntegrityManager integrityManager;
+    private final long cloudProjectNumber;
 
-    public PlayIntegrityBridge(Context context, WebView webView) {
+    public PlayIntegrityBridge(Context context, WebView webView, long cloudProjectNumber) {
         this.context = context.getApplicationContext();
         this.webView = webView;
+        this.cloudProjectNumber = cloudProjectNumber;
 
         // Create an instance of a manager.
         this.integrityManager = IntegrityManagerFactory.create(this.context);
@@ -62,10 +64,13 @@ public class PlayIntegrityBridge {
      */
     @JavascriptInterface
     public void requestIntegrityToken(final String nonce, final String callbackId) {
-        // Request the integrity token by providing a nonce.
+        // Request the integrity token by providing a nonce and the Cloud project number.
         Task<IntegrityTokenResponse> integrityTokenResponse =
                 integrityManager.requestIntegrityToken(
-                        IntegrityTokenRequest.builder().setNonce(nonce).build());
+                        IntegrityTokenRequest.builder()
+                                .setNonce(nonce)
+                                .setCloudProjectNumber(cloudProjectNumber)
+                                .build());
 
         integrityTokenResponse
                 .addOnSuccessListener(response -> {
