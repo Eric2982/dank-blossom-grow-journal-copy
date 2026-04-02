@@ -1,5 +1,12 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
 
+// Expected SHA-256 certificate fingerprint for the release signing key,
+// taken from /.well-known/assetlinks.json (colon-separated hex → lowercase hex).
+const EXPECTED_CERT_SHA256 =
+  "B3:3F:FC:80:DB:13:17:AA:B3:1C:EF:64:30:2A:DE:32:A7:6F:17:CD:85:D6:7E:9D:19:CA:1A:B5:AB:F5:F0:B5"
+    .replace(/:/g, "")
+    .toLowerCase();
+
 // Get a Google OAuth2 access token from the service account JSON
 async function getAccessToken(serviceAccountJson) {
   const sa = JSON.parse(serviceAccountJson);
@@ -113,6 +120,20 @@ Deno.serve(async (req) => {
       return Response.json({
         allowed: false,
         reason: `App not recognized by Play: ${appVerdict}`,
+        verdict: tokenPayload,
+      }, { status: 403 });
+    }
+
+    // Verify the signing certificate SHA-256 digest to ensure the token was
+    // issued for the official release build and not a repackaged / re-signed APK.
+    const certDigests: string[] = tokenPayload?.appIntegrity?.certificateSha256Digest ?? [];
+    const certMatch = certDigests.some(
+      (d) => d.toLowerCase() === EXPECTED_CERT_SHA256
+    );
+    if (!certMatch) {
+      return Response.json({
+        allowed: false,
+        reason: "App certificate SHA-256 digest does not match the expected signing certificate",
         verdict: tokenPayload,
       }, { status: 403 });
     }
