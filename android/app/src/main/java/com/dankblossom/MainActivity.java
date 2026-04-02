@@ -28,6 +28,12 @@ public class MainActivity extends Activity {
 
     private static final String BASE_URL = "https://dankblossom.app";
 
+    /**
+     * Google Cloud project number linked to this app in the Play Console.
+     * Replace with the actual value from your Google Cloud / Play Console project.
+     */
+    private static final long CLOUD_PROJECT_NUMBER = 0L;
+
     private WebView webView;
 
     @Override
@@ -43,7 +49,7 @@ public class MainActivity extends Activity {
 
         // Register the Play Integrity bridge so the React app can request tokens.
         webView.addJavascriptInterface(
-                new PlayIntegrityBridge(this, webView),
+                new PlayIntegrityBridge(this, webView, CLOUD_PROJECT_NUMBER),
                 "AndroidPlayIntegrity");
 
         // Keep all navigation inside the WebView instead of opening the browser.
