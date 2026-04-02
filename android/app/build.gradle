@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace "com.base6994e0c98fb6b9d1d4521dbd.app"
     compileSdk 34
 
     defaultConfig {
