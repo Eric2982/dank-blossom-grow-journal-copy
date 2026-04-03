@@ -196,6 +196,23 @@ async function handleVerify(request, env) {
   }
 }
 
+// ─── CORS ─────────────────────────────────────────────────────────────────────
+
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Authorization, Content-Type, X-Requested-With',
+  'Access-Control-Max-Age': '1728000',
+};
+
+/** Responds to a CORS preflight (OPTIONS) request. */
+function handleOptions() {
+  return new Response(null, {
+    status: 204,
+    headers: CORS_HEADERS,
+  });
+}
+
 // ─── Utilities ────────────────────────────────────────────────────────────────
 
 function jsonResponse(data, status = 200) {
@@ -204,6 +221,7 @@ function jsonResponse(data, status = 200) {
     headers: {
       'Content-Type': 'application/json',
       'X-Content-Type-Options': 'nosniff',
+      ...CORS_HEADERS,
     },
   });
 }
@@ -219,6 +237,16 @@ export default {
     const url = new URL(request.url);
 
     // ── API routes ──────────────────────────────────────────────────────────
+
+    // Answer CORS preflight for the verify endpoint so browsers and WAFs do
+    // not block the subsequent POST request.
+    if (
+      url.pathname === '/api/play-integrity/verify' &&
+      request.method === 'OPTIONS'
+    ) {
+      return handleOptions();
+    }
+
     if (
       url.pathname === '/api/play-integrity/verify' &&
       request.method === 'POST'
