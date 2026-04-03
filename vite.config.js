@@ -13,7 +13,7 @@ export default defineConfig({
     legacySDKImports: process.env.BASE44_LEGACY_SDK_IMPORTS === 'true',
     hmrNotifier: true,
     navigationNotifier: true,
-    analyticsTracker: !!process.env.VITE_BASE44_APP_ID,
+    analyticsTracker: true,
     visualEditAgent: true
   }), react(), cloudflare()]
 });
