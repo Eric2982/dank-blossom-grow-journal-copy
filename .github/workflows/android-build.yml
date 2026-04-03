@@ -23,7 +23,15 @@ jobs:
 
     - name: Generate Keystore from Secret
       run: |
-        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode --ignore-garbage > android/app/release.jks
+        set -euo pipefail
+        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/release.jks
+        ls -l android/app/release.jks
+
+    - name: Verify keystore
+      run: |
+        keytool -list \
+          -keystore android/app/release.jks \
+          -storepass "${{ secrets.KEYSTORE_PASSWORD }}"
 
     - name: Setup Gradle
       working-directory: ./android
