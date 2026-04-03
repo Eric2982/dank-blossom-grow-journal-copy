@@ -8,6 +8,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.base6994e0c98fb6b9d1d4521dbd.app.BuildConfig;
+
 /**
  * MainActivity
  *
@@ -30,9 +32,10 @@ public class MainActivity extends Activity {
 
     /**
      * Google Cloud project number linked to this app in the Play Console.
-     * Replace with the actual value from your Google Cloud / Play Console project.
+     * Injected at build time via BuildConfig from the
+     * PLAY_INTEGRITY_CLOUD_PROJECT_NUMBER environment variable.
      */
-    private static final long CLOUD_PROJECT_NUMBER = 0L;
+    private static final long CLOUD_PROJECT_NUMBER = BuildConfig.PLAY_INTEGRITY_CLOUD_PROJECT_NUMBER;
 
     private WebView webView;
 

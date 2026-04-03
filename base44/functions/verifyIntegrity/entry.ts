@@ -104,14 +104,12 @@ Deno.serve(async (req) => {
     const verdict = await integrityRes.json();
     const tokenPayload = verdict.tokenPayloadExternal;
 
-    // Validate nonce to prevent token replay attacks
-    if (nonce) {
-      const tokenNonce = tokenPayload?.requestDetails?.nonce;
-      if (!tokenNonce || tokenNonce !== nonce) {
-        return Response.json({
-          error: "Nonce mismatch: integrity token does not match this request",
-        }, { status: 400 });
-      }
+    // Validate nonce to prevent token replay attacks — required field
+    const tokenNonce = tokenPayload?.requestDetails?.nonce;
+    if (!nonce || !tokenNonce || tokenNonce !== nonce) {
+      return Response.json({
+        error: "Nonce mismatch: integrity token does not match this request",
+      }, { status: 400 });
     }
 
     // Check app recognition

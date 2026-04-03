@@ -12,6 +12,26 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
+
+        // Inject the Google Cloud project number at build time.
+        // Set PLAY_INTEGRITY_CLOUD_PROJECT_NUMBER in CI / your environment to
+        // the numeric project ID shown in the Google Cloud Console.
+        // Release builds fail fast when the variable is unset; debug builds
+        // fall back to 0 so local development is not blocked.
+        def cloudProjectNumber = System.getenv("PLAY_INTEGRITY_CLOUD_PROJECT_NUMBER")
+        if (cloudProjectNumber == null || cloudProjectNumber.isEmpty()) {
+            if (gradle.startParameter.taskNames.any { it.toLowerCase().contains("release") }) {
+                throw new GradleException(
+                    "PLAY_INTEGRITY_CLOUD_PROJECT_NUMBER environment variable is required for release builds."
+                )
+            }
+            cloudProjectNumber = "0"
+        }
+        buildConfigField "long", "PLAY_INTEGRITY_CLOUD_PROJECT_NUMBER", "${cloudProjectNumber}L"
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 
     signingConfigs {
