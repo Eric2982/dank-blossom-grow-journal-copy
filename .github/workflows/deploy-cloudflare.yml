@@ -1,0 +1,80 @@
+name: 'Build and Deploy Main Cloudflare Worker'
+
+on:
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+# Prevent concurrent deployments from racing against each other.
+concurrency:
+  group: deploy-cloudflare-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # actions/checkout@v4
+
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+
+      - name: 'Install dependencies'
+        run: npm ci
+
+      - name: 'Build'
+        env:
+          VITE_BASE44_APP_ID: ${{ secrets.VITE_BASE44_APP_ID }}
+        run: npm run build
+
+      - name: 'Check Cloudflare secrets'
+        id: secrets-check
+        env:
+          CF_API_TOKEN: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
+          CF_ACCOUNT_ID: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
+        run: |
+          if [ -n "$CF_API_TOKEN" ] && [ -n "$CF_ACCOUNT_ID" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 'Deploy main Worker (dankblossom.app)'
+        if: steps.secrets-check.outputs.available == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
+          CLOUDFLARE_ACCOUNT_ID: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
+          WRANGLER_SEND_METRICS: 'false'
+          WRANGLER_TELEMETRY_DISABLE: 'true'
+          CI: 'true'
+        run: npx wrangler deploy
+
+      - name: 'Verify deployment'
+        if: steps.secrets-check.outputs.available == 'true'
+        run: |
+          echo "Checking https://dankblossom.app/ ..."
+          STATUS="000"
+          for i in 1 2 3 4 5; do
+            STATUS=$(curl --silent --output /dev/null --write-out "%{http_code}" \
+              --max-time 30 \
+              "https://dankblossom.app/")
+            echo "Attempt ${i}: HTTP status ${STATUS}"
+            [ "${STATUS}" = "200" ] && break
+            echo "Not ready yet — retrying in 10 s..."
+            sleep 10
+          done
+          if [ "${STATUS}" != "200" ]; then
+            echo "Deployment verification failed — expected 200, got ${STATUS}"
+            exit 1
+          fi
+          echo "Worker is live and responding correctly."

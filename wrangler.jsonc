@@ -6,8 +6,11 @@
   "observability": {
     "enabled": true
   },
+  "routes": [
+    { "pattern": "dankblossom.app/*", "zone_name": "dankblossom.app" }
+  ],
   "assets": {
-    "directory": "./dist",
+    "directory": "./dist/client",
     "binding": "ASSETS",
     "not_found_handling": "single-page-application"
   },
