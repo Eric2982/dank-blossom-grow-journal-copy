@@ -254,6 +254,17 @@ export default {
       return handleVerify(request, env);
     }
 
+    // Proxy all other /api/ requests to the base44 backend.
+    // The ASSETS handler only supports GET and returns 405 for other methods
+    // (e.g. POST to /api/apps/{id}/analytics/track/batch), so API calls must
+    // be forwarded to the upstream server rather than served as static files.
+    if (url.pathname.startsWith('/api/')) {
+      const backendUrl = new URL(url.pathname + url.search, 'https://base44.app');
+      // Clone the request with the new URL so the body stream is only consumed once.
+      const proxyRequest = new Request(backendUrl.toString(), request);
+      return fetch(proxyRequest);
+    }
+
     // ── Static assets (React SPA) ───────────────────────────────────────────
     return env.ASSETS.fetch(request);
   },
