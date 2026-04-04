@@ -17,7 +17,31 @@ permissions:
   id-token: write
 
 jobs:
+  # Check whether the Cloudflare Worker deployment is configured.
+  # If it is, that deployment is the authoritative one and correctly proxies
+  # all /api/* requests (including POST analytics/track/batch) to base44.app.
+  # Deploying to GitHub Pages at the same time would shadow the Worker with a
+  # purely static host that cannot handle POST requests and returns 405.
+  check-cloudflare:
+    runs-on: ubuntu-latest
+    outputs:
+      cloudflare-configured: ${{ steps.check.outputs.available }}
+    steps:
+      - name: 'Check Cloudflare secrets'
+        id: check
+        env:
+          CF_API_TOKEN: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
+          CF_ACCOUNT_ID: '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}'
+        run: |
+          if [ -n "$CF_API_TOKEN" ] && [ -n "$CF_ACCOUNT_ID" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
   build:
+    needs: check-cloudflare
+    if: needs.check-cloudflare.outputs.cloudflare-configured == 'false'
     runs-on: ubuntu-latest
 
     steps:
