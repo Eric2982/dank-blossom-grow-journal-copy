@@ -36,16 +36,10 @@ android {
 
     signingConfigs {
         release {
-            def keystoreFilePath = System.getenv("KEYSTORE_FILE")
-            def keystorePasswordValue = System.getenv("KEYSTORE_PASSWORD")
-            def keyAliasValue = System.getenv("KEY_ALIAS")
-            def keyPasswordValue = System.getenv("KEY_PASSWORD")
-            if (keystoreFilePath && keystorePasswordValue && keyAliasValue && keyPasswordValue) {
-                storeFile file(keystoreFilePath)
-                storePassword keystorePasswordValue
-                keyAlias keyAliasValue
-                keyPassword keyPasswordValue
-            }
+            storeFile file("/Users/ericcook/StudioProjects/upload-key.jks")
+            storePassword System.getenv("KEYSTORE_PASSWORD")
+            keyAlias "upload-key"
+            keyPassword System.getenv("KEY_PASSWORD")
         }
     }
 
