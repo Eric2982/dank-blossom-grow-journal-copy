@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    alias(libs.plugins.android.application)
 }
 
 android {
@@ -62,8 +62,8 @@ android {
 
 dependencies {
     // Google Play Integrity API — verifies app and device integrity at runtime
-    implementation 'com.google.android.play:integrity:1.6.0'
+    implementation libs.play.integrity
 
     // Google Play Services Tasks (required by the Integrity API's Task callbacks)
-    implementation 'com.google.android.gms:play-services-tasks:18.2.0'
+    implementation libs.play.services.tasks
 }
