@@ -34,11 +34,21 @@ jobs:
       - name: Generate keystore
         if: github.event_name == 'push'
         run: ./gradlew generateKeystore
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEYSTORE_PATH: ${{ github.workspace }}/android/release.jks
 
       - name: Verify keystore
         if: github.event_name == 'push'
         run: ./gradlew verifyKeystore
+        env:
+          KEYSTORE_PATH: ${{ github.workspace }}/android/release.jks
 
       - name: Build release version
         if: github.event_name == 'push'
         run: ./gradlew assembleRelease --stacktrace --info
+        env:
+          KEYSTORE_PATH: ${{ github.workspace }}/android/release.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
