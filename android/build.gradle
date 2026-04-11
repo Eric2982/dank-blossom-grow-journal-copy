@@ -3,13 +3,6 @@ plugins {
     alias(libs.plugins.android.application) apply false
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
@@ -54,8 +47,8 @@ task generateKeystore {
                     '-keysize', '2048',
                     '-validity', '10000',
                     '-keystore', keystorePath,
-                    '-storepassfile', storePassFile.absolutePath,
-                    '-keypassfile',   keyPassFile.absolutePath,
+                    '-storepass:file', storePassFile.absolutePath,
+                    '-keypass:file',   keyPassFile.absolutePath,
                     '-dname', 'CN=Android,OU=Android,O=Android,L=Mountain View,S=California,C=US',
                     '-noprompt'
             }
