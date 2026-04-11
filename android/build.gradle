@@ -36,19 +36,38 @@ task generateKeystore {
         }
 
         def keystoreFile = file(keystorePath)
+        if (keystoreFile.exists()) {
+            throw new GradleException(
+                "Keystore already exists at: ${keystorePath}. " +
+                "Delete it first if you intend to regenerate it."
+            )
+        }
+
         keystoreFile.parentFile.mkdirs()
 
-        exec {
-            commandLine 'keytool', '-genkeypair',
-                '-alias', 'upload-key',
-                '-keyalg', 'RSA',
-                '-keysize', '2048',
-                '-validity', '10000',
-                '-keystore', keystorePath,
-                '-storepass', keystorePassword,
-                '-keypass', keyPassword,
-                '-dname', 'CN=Android,OU=Android,O=Android,L=Mountain View,S=California,C=US',
-                '-noprompt'
+        // Write passwords to temporary files so they are not exposed as
+        // command-line arguments (which would be visible in process listings).
+        def storePassFile = File.createTempFile("storepass", ".tmp")
+        def keyPassFile   = File.createTempFile("keypass",   ".tmp")
+        try {
+            storePassFile.text = keystorePassword
+            keyPassFile.text   = keyPassword
+
+            exec {
+                commandLine 'keytool', '-genkeypair',
+                    '-alias', 'upload-key',
+                    '-keyalg', 'RSA',
+                    '-keysize', '2048',
+                    '-validity', '10000',
+                    '-keystore', keystorePath,
+                    '-storepassfile', storePassFile.absolutePath,
+                    '-keypassfile',   keyPassFile.absolutePath,
+                    '-dname', 'CN=Android,OU=Android,O=Android,L=Mountain View,S=California,C=US',
+                    '-noprompt'
+            }
+        } finally {
+            storePassFile.delete()
+            keyPassFile.delete()
         }
 
         println "Keystore generated at: ${keystorePath}"
