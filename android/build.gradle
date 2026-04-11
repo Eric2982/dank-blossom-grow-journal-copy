@@ -1,12 +1,6 @@
 // Top-level build file — configuration shared across all sub-projects/modules.
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath libs.android.gradlePlugin
-    }
+plugins {
+    alias(libs.plugins.android.application) apply false
 }
 
 allprojects {
