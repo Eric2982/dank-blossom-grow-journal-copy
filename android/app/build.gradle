@@ -10,7 +10,7 @@ android {
         applicationId "com.base6994e0c98fb6b9d1d4521dbd.app"
         minSdk 23
         targetSdk 34
-        versionCode 1
+        versionCode 1.0.1
         versionName "1.0"
 
         // Inject the Google Cloud project number at build time.
