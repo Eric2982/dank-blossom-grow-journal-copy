@@ -23,7 +23,6 @@ VITE_BASE44_APP_BASE_URL=your_backend_url
 
 e.g.
 VITE_BASE44_APP_ID=6994e0c98fb6b9d1d4521dbd
-VITE_BASE44_APP_BASE_URL=https://archetypal-grow-wise-log.base44.app
 ```
 
 Run the app: `npm run dev`
