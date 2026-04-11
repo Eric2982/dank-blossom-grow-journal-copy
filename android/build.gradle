@@ -19,3 +19,55 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+task generateKeystore {
+    description 'Generates a release keystore using keytool'
+    group 'signing'
+
+    doLast {
+        def keystorePath = System.getenv("KEYSTORE_PATH") ?: "${rootProject.buildDir}/release.jks"
+        def keystorePassword = System.getenv("KEYSTORE_PASSWORD")
+        def keyPassword = System.getenv("KEY_PASSWORD")
+
+        if (!keystorePassword || !keyPassword) {
+            throw new GradleException(
+                "KEYSTORE_PASSWORD and KEY_PASSWORD environment variables are required."
+            )
+        }
+
+        def keystoreFile = file(keystorePath)
+        keystoreFile.parentFile.mkdirs()
+
+        exec {
+            commandLine 'keytool', '-genkeypair',
+                '-alias', 'upload-key',
+                '-keyalg', 'RSA',
+                '-keysize', '2048',
+                '-validity', '10000',
+                '-keystore', keystorePath,
+                '-storepass', keystorePassword,
+                '-keypass', keyPassword,
+                '-dname', 'CN=Android,OU=Android,O=Android,L=Mountain View,S=California,C=US',
+                '-noprompt'
+        }
+
+        println "Keystore generated at: ${keystorePath}"
+    }
+}
+
+task verifyKeystore {
+    description 'Verifies that the release keystore exists and is accessible'
+    group 'signing'
+
+    doLast {
+        def keystorePath = System.getenv("KEYSTORE_PATH")
+        if (!keystorePath) {
+            throw new GradleException("KEYSTORE_PATH environment variable is not set.")
+        }
+        def keystoreFile = file(keystorePath)
+        if (!keystoreFile.exists()) {
+            throw new GradleException("Keystore file not found at: ${keystorePath}")
+        }
+        println "Keystore verified at: ${keystorePath}"
+    }
+}
