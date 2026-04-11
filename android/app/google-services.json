@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "547124811770",
+    "project_id": "dankblossomapp",
+    "storage_bucket": "dankblossomapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547124811770:android:5f015a0ecbbf0063fbf643",
+        "android_client_info": {
+          "package_name": "com.base6994e0c98fb6b9d1d4521dbd.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuDx8U7B2p4DPbBtcBLYQLROtlHt6l-Gg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
