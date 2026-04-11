@@ -60,8 +60,8 @@ task generateKeystore {
                     '-keysize', '2048',
                     '-validity', '10000',
                     '-keystore', keystorePath,
-                    '-storepassfile', storePassFile.absolutePath,
-                    '-keypassfile',   keyPassFile.absolutePath,
+                    '-storepass:file', storePassFile.absolutePath,
+                    '-keypass:file',   keyPassFile.absolutePath,
                     '-dname', 'CN=Android,OU=Android,O=Android,L=Mountain View,S=California,C=US',
                     '-noprompt'
             }
