@@ -10,8 +10,8 @@ android {
         applicationId "com.base6994e0c98fb6b9d1d4521dbd.app"
         minSdk 23
         targetSdk 34
-        versionCode 1.0.1
-        versionName "1.0"
+        versionCode 1
+        versionName "1.0.1"
 
         // Inject the Google Cloud project number at build time.
         // Set PLAY_INTEGRITY_CLOUD_PROJECT_NUMBER in CI / your environment to
@@ -36,7 +36,8 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("/Users/ericcook/StudioProjects/upload-key.jks")
+            def keystorePath = System.getenv("KEYSTORE_PATH")
+            storeFile keystorePath ? file(keystorePath) : null
             storePassword System.getenv("KEYSTORE_PASSWORD")
             keyAlias "upload-key"
             keyPassword System.getenv("KEY_PASSWORD")
@@ -47,7 +48,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            if (System.getenv("KEYSTORE_PATH")) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 
