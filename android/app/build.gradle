@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -55,6 +56,12 @@ android {
 }
 
 dependencies {
+    // Firebase BoM — manages all Firebase library versions
+    implementation platform(libs.firebase.bom)
+
+    // Firebase Analytics (version managed by BoM)
+    implementation libs.firebase.analytics
+
     // Google Play Integrity API — verifies app and device integrity at runtime
     implementation libs.play.integrity
 

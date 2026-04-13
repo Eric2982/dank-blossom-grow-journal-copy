@@ -1,11 +1,16 @@
 [versions]
 agp = "8.2.2"
+googleServices = "4.4.4"
+firebaseBom = "34.12.0"
 playIntegrity = "1.6.0"
 playServicesTasks = "18.2.0"
 
 [libraries]
 play-integrity = { group = "com.google.android.play", name = "integrity", version.ref = "playIntegrity" }
 play-services-tasks = { group = "com.google.android.gms", name = "play-services-tasks", version.ref = "playServicesTasks" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
