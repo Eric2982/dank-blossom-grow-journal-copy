@@ -8,7 +8,7 @@ const sections = [
     icon: Wind,
     title: "Understanding VPD (Vapor Pressure Deficit)",
     color: "text-violet-400",
-    content: `**Vapor Pressure Deficit (VPD)** is the difference between the amount of moisture currently in the air and the maximum amount the air can hold at saturation. It's one of the most critical metrics for cannabis cultivation.
+    content: `**Vapor Pressure Deficit (VPD)** is the difference between the amount of moisture currently in the air and the maximum amount the air can hold at saturation. It's one of the most critical metrics for plants cultivation.
 
 **Why VPD Matters:**
 VPD directly controls transpiration rate - the process plants use to move water and nutrients from roots to leaves. Proper VPD ensures optimal nutrient uptake, growth rate, and prevents mold/mildew issues.
@@ -36,7 +36,7 @@ VPair = vapor pressure of ambient air
 - Night-time VPD is less critical but should stay above 0.4 kPa`,
     resources: [
       { title: "Quest Climate - VPD Chart & Calculator", url: "https://www.questclimate.com/vpd-chart-vapor-pressure-deficit/" },
-      { title: "Royal Queen Seeds - Complete VPD Guide", url: "https://www.royalqueenseeds.com/blog-vpd-chart-cannabis-n1042" },
+      { title: "Royal Queen Seeds - Complete VPD Guide", url: "https://www.royalqueenseeds.com/blog-vpd-chart-plants-n1042" },
       { title: "Pulse - Understanding VPD in Cannabis", url: "https://pulsegrow.com/blogs/learn/vpd" }
     ]
   },
@@ -82,7 +82,7 @@ DLI = (PPFD × 3600 × photoperiod hours) ÷ 1,000,000
       { title: "Photone App - Turn Phone Into PAR Meter", url: "https://photoneapp.com/" },
       { title: "Migro LED - Light Science & Reviews", url: "https://migrolight.com/blogs/grow-lights" },
       { title: "Fluence - DLI Calculator", url: "https://fluence.science/science-articles/dli-daily-light-integral-calculator/" },
-      { title: "Cocoforcannabis - Light Intensity Guide", url: "https://www.cocoforcannabis.com/light-guide/" }
+      { title: "Cocoforplants - Light Intensity Guide", url: "https://www.cocoforplants.com/light-guide/" }
     ]
   },
   {
@@ -128,7 +128,7 @@ Always measure both input and runoff EC:
     resources: [
       { title: "General Hydroponics - Official Feed Charts", url: "https://generalhydroponics.com/feedcharts" },
       { title: "Bluelab - EC/TDS/PPM Guide", url: "https://www.bluelab.com/learning-center/ec-tds-and-cf" },
-      { title: "Cocoforcannabis - Nutrient Guide", url: "https://www.cocoforcannabis.com/guide-to-cannabis-nutrients/" }
+      { title: "Cocoforplants - Nutrient Guide", url: "https://www.cocoforplants.com/guide-to-plants-nutrients/" }
     ]
   },
   {
@@ -196,9 +196,9 @@ Timeline: Recovery in 7-10 days
 - Damaged leaves won't recover - watch new growth
 - When in doubt, flush with pH'd water and start fresh`,
     resources: [
-      { title: "Grow Weed Easy - Picture Diagnosis Tool", url: "https://www.growweedeasy.com/cannabis-symptoms-pictures" },
-      { title: "Royal Queen Seeds - Deficiency Chart", url: "https://www.royalqueenseeds.com/blog-cannabis-nutrient-deficiency-chart-n757" },
-      { title: "Cocoforcannabis - Nutrient Disorders", url: "https://www.cocoforcannabis.com/cannabis-nutrient-disorders/" }
+      { title: "Grow Weed Easy - Picture Diagnosis Tool", url: "https://www.growweedeasy.com/plants-symptoms-pictures" },
+      { title: "Royal Queen Seeds - Deficiency Chart", url: "https://www.royalqueenseeds.com/blog-plants-nutrient-deficiency-chart-n757" },
+      { title: "Cocoforplants - Nutrient Disorders", url: "https://www.cocoforplants.com/plants-nutrient-disorders/" }
     ]
   },
   {
@@ -363,9 +363,9 @@ Benefits: Better light penetration, improved airflow
 Warning: Don't remove more than 20-30% at once`,
     resources: [
       { title: "Grow Weed Easy - LST Tutorial", url: "https://www.growweedeasy.com/low-stress-training-lst" },
-      { title: "Cocoforcannabis - Training Techniques", url: "https://www.cocoforcannabis.com/training-cannabis-plants/" },
+      { title: "Cocoforplants - Training Techniques", url: "https://www.cocoforplants.com/training-plants-plants/" },
       { title: "Nebula Haze - Manifold Mainlining", url: "https://www.growweedeasy.com/mainlining-nugbuckets" },
-      { title: "Royal Queen Seeds - Complete Training Guide", url: "https://www.royalqueenseeds.com/blog-cannabis-plant-training-techniques-n1220" }
+      { title: "Royal Queen Seeds - Complete Training Guide", url: "https://www.royalqueenseeds.com/blog-plants-plant-training-techniques-n1220" }
     ]
   },
   {
@@ -444,8 +444,8 @@ Prevention: Keep humidity below 50% in flower
     resources: [
       { title: "Grow Weed Easy - Harvest & Cure", url: "https://www.growweedeasy.com/harvest" },
       { title: "Boveda - Official Cure Guide", url: "https://bovedainc.com/support/herbal/" },
-      { title: "Royal Queen Seeds - Drying & Curing", url: "https://www.royalqueenseeds.com/blog-how-to-dry-and-cure-cannabis-buds-n209" },
-      { title: "Nebula Haze - Troubleshooting Tool", url: "https://www.growweedeasy.com/cannabis-symptoms-pictures" }
+      { title: "Royal Queen Seeds - Drying & Curing", url: "https://www.royalqueenseeds.com/blog-how-to-dry-and-cure-plants-buds-n209" },
+      { title: "Nebula Haze - Troubleshooting Tool", url: "https://www.growweedeasy.com/plants-symptoms-pictures" }
     ]
   }
 ];

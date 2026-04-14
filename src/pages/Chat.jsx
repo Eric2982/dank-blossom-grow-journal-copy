@@ -74,7 +74,7 @@ export default function Chat() {
     setAiLoading(true);
     try {
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are a helpful cannabis growing assistant. Answer this question: ${userMsg}`,
+        prompt: `You are a helpful plants growing assistant. Answer this question: ${userMsg}`,
         add_context_from_internet: true,
       });
       setAiConversation(prev => [...prev, { role: "assistant", content: response }]);
@@ -115,7 +115,7 @@ export default function Chat() {
               {aiConversation.length === 0 && (
                 <div className="text-center text-white/30 mt-20">
                   <Bot className="w-12 h-12 mx-auto mb-4 text-emerald-400" />
-                  <p>Ask me anything about growing cannabis!</p>
+                  <p>Ask me anything about growing plants!</p>
                 </div>
               )}
               {aiConversation.map((msg, idx) => (

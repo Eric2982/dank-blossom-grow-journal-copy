@@ -1,0 +1,121 @@
+{
+  "name": "Strain",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Strain name"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "indica",
+        "sativa",
+        "hybrid"
+      ],
+      "description": "Strain type"
+    },
+    "plant_type": {
+      "type": "string",
+      "enum": [
+        "photoperiod",
+        "autoflower",
+        "fast_flower"
+      ],
+      "default": "photoperiod",
+      "description": "Plant flowering type"
+    },
+    "breeder": {
+      "type": "string",
+      "description": "Breeder or seed bank"
+    },
+    "flowering_time_weeks": {
+      "type": "number",
+      "description": "Flowering time in weeks"
+    },
+    "planted_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date planted"
+    },
+    "flipped_to_flower_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date flipped to flower"
+    },
+    "harvest_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Expected or actual harvest date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "harvested",
+        "planned"
+      ],
+      "default": "active",
+      "description": "Current status"
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of photo URLs"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notes about the strain"
+    }
+  },
+  "required": [
+    "name",
+    "type"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
+    "read": {
+      "created_by": "{{user.email}}"
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "write": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

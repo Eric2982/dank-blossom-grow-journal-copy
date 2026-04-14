@@ -8,13 +8,13 @@ import MobileSelect from "../MobileSelect";
 
 export default function StrainForm({ open, onOpenChange, onSubmit, strain, key }) {
   const [form, setForm] = useState(strain || {
-    name: "", type: "hybrid", plant_type: "photoperiod", breeder: "", thc_percentage: "", cbd_percentage: "",
+    name: "", type: "hybrid", plant_type: "photoperiod", breeder: "",
     flowering_time_weeks: "", planted_date: "", flipped_to_flower_date: "", harvest_date: "", status: "active", notes: ""
   });
 
   React.useEffect(() => {
     if (open && strain) setForm({ ...strain, harvest_date: strain.harvest_date || "", planted_date: strain.planted_date || "", flipped_to_flower_date: strain.flipped_to_flower_date || "" });
-    if (open && !strain) setForm({ name: "", type: "hybrid", plant_type: "photoperiod", breeder: "", thc_percentage: "", cbd_percentage: "", flowering_time_weeks: "", planted_date: "", flipped_to_flower_date: "", harvest_date: "", status: "active", notes: "" });
+    if (open && !strain) setForm({ name: "", type: "hybrid", plant_type: "photoperiod", breeder: "", flowering_time_weeks: "", planted_date: "", flipped_to_flower_date: "", harvest_date: "", status: "active", notes: "" });
   }, [open]);
 
   const handleSubmit = (e) => {
@@ -24,8 +24,6 @@ export default function StrainForm({ open, onOpenChange, onSubmit, strain, key }
       type: form.type,
       plant_type: form.plant_type,
       breeder: form.breeder || undefined,
-      thc_percentage: form.thc_percentage ? parseFloat(form.thc_percentage) : undefined,
-      cbd_percentage: form.cbd_percentage ? parseFloat(form.cbd_percentage) : undefined,
       flowering_time_weeks: form.flowering_time_weeks ? parseInt(form.flowering_time_weeks) : undefined,
       planted_date: form.planted_date || undefined,
       flipped_to_flower_date: form.flipped_to_flower_date || undefined,
@@ -35,7 +33,7 @@ export default function StrainForm({ open, onOpenChange, onSubmit, strain, key }
     };
     onSubmit(data);
     if (!strain) {
-      setForm({ name: "", type: "hybrid", plant_type: "photoperiod", breeder: "", thc_percentage: "", cbd_percentage: "",
+      setForm({ name: "", type: "hybrid", plant_type: "photoperiod", breeder: "",
         flowering_time_weeks: "", planted_date: "", flipped_to_flower_date: "", harvest_date: "", status: "active", notes: "" });
     }
   };
@@ -103,18 +101,6 @@ export default function StrainForm({ open, onOpenChange, onSubmit, strain, key }
             <Label className="text-white/50 text-xs">Breeder / Seed Bank</Label>
             <Input value={form.breeder} onChange={(e) => setForm({ ...form, breeder: e.target.value })}
               className="bg-white/5 border-white/10 text-white mt-1" placeholder="e.g. Barney's Farm" />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <Label className="text-white/50 text-xs">THC %</Label>
-              <Input type="number" step="0.1" value={form.thc_percentage} onChange={(e) => setForm({ ...form, thc_percentage: e.target.value })}
-                className="bg-white/5 border-white/10 text-white mt-1" />
-            </div>
-            <div>
-              <Label className="text-white/50 text-xs">CBD %</Label>
-              <Input type="number" step="0.1" value={form.cbd_percentage} onChange={(e) => setForm({ ...form, cbd_percentage: e.target.value })}
-                className="bg-white/5 border-white/10 text-white mt-1" />
-            </div>
           </div>
           <div>
             <Label className="text-white/50 text-xs">Flowering Time (weeks)</Label>
