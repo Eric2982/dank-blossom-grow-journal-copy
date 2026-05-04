@@ -1,0 +1,75 @@
+{
+  "name": "UserAchievement",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "User's email"
+    },
+    "user_name": {
+      "type": "string",
+      "description": "User's display name"
+    },
+    "challenge_id": {
+      "type": "string",
+      "description": "ID of the challenge won"
+    },
+    "challenge_title": {
+      "type": "string",
+      "description": "Title of the challenge"
+    },
+    "badge_name": {
+      "type": "string",
+      "description": "Badge earned"
+    },
+    "medal": {
+      "type": "string",
+      "enum": [
+        "gold",
+        "silver",
+        "bronze",
+        "participation"
+      ],
+      "description": "Medal type earned"
+    },
+    "skill_level": {
+      "type": "string",
+      "description": "Skill level of the challenge"
+    },
+    "cadence": {
+      "type": "string",
+      "description": "weekly/monthly/per_harvest"
+    },
+    "earned_date": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "user_email",
+    "badge_name",
+    "medal"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "isAuthenticated": true
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

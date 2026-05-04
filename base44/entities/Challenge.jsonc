@@ -1,0 +1,138 @@
+{
+  "name": "Challenge",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Challenge title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Challenge description"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "biggest_flower",
+        "fastest_veg",
+        "highest_yield",
+        "best_deficiency_recovery",
+        "most_trichomes",
+        "best_training",
+        "best_roots",
+        "vpd_mastery",
+        "nutrient_precision",
+        "first_harvest",
+        "ph_perfectionist",
+        "biggest_node_spacing",
+        "best_lollipop",
+        "pest_recovery",
+        "best_autoflower",
+        "consistency_king",
+        "biggest_cola",
+        "fastest_flower",
+        "best_journal",
+        "flush_master"
+      ],
+      "description": "Type of challenge"
+    },
+    "cadence": {
+      "type": "string",
+      "enum": [
+        "weekly",
+        "monthly",
+        "per_harvest"
+      ],
+      "default": "monthly",
+      "description": "How often this challenge runs"
+    },
+    "skill_level": {
+      "type": "string",
+      "enum": [
+        "beginner",
+        "intermediate",
+        "advanced",
+        "all"
+      ],
+      "default": "all",
+      "description": "Target skill level"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Challenge start date"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Challenge end date"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "upcoming",
+        "active",
+        "voting",
+        "completed"
+      ],
+      "default": "upcoming",
+      "description": "Challenge status"
+    },
+    "prize_badge": {
+      "type": "string",
+      "description": "Badge name for winners"
+    },
+    "medal_gold": {
+      "type": "string",
+      "description": "Gold medal label"
+    },
+    "medal_silver": {
+      "type": "string",
+      "description": "Silver medal label"
+    },
+    "medal_bronze": {
+      "type": "string",
+      "description": "Bronze medal label"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Challenge banner image"
+    },
+    "rules": {
+      "type": "string",
+      "description": "Challenge rules and requirements"
+    },
+    "how_to_win": {
+      "type": "string",
+      "description": "Specific criteria for winning"
+    }
+  },
+  "required": [
+    "title",
+    "type",
+    "start_date",
+    "end_date"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "isAuthenticated": true
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
