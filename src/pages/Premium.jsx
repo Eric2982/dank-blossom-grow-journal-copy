@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, Sparkles, Zap, TrendingUp, Bell, Crown } from "lucide-react";
 
-const PRICE_ID = "price_1TMAJr8mtfrljfDsCpp1roWo";
+const PRICE_ID = "price_1TTMnL8mtfrljfDs8t2C9rIu";
 
 export default function Premium() {
   const [loading, setLoading] = useState(false);
