@@ -42,6 +42,10 @@ export default function Dashboard() {
       queryClient.invalidateQueries({ queryKey: ["strains"] });
       setShowStrainForm(false);
     },
+    onError: (error) => {
+      console.error("Failed to create strain:", error);
+      alert("Failed to save strain: " + (error?.message || "Unknown error. Are you logged in?"));
+    },
   });
 
   const handleRefresh = async () => {
