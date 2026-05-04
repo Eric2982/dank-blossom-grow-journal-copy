@@ -16,9 +16,10 @@ const medalColors = {
 
 export default function AchievementsPanel({ userEmail }) {
   const { data: achievements = [], isLoading } = useQuery({
-    queryKey: ["achievements", userEmail],
+    queryKey: ["challenges", "achievements", userEmail],
     queryFn: () => base44.entities.UserAchievement.filter({ user_email: userEmail }),
     enabled: !!userEmail,
+    staleTime: 60_000,
   });
 
   const gold = achievements.filter(a => a.medal === "gold").length;

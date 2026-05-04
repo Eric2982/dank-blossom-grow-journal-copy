@@ -34,27 +34,26 @@ export default function Challenges() {
   const queryClient = useQueryClient();
 
   const { data: user } = useQuery({
-    queryKey: ["user"],
+    queryKey: ["challenges", "user"],
     queryFn: () => base44.auth.me(),
+    staleTime: 300_000,
   });
 
   const { data: challenges = [], isLoading } = useQuery({
-    queryKey: ["challenges"],
+    queryKey: ["challenges", "list"],
     queryFn: () => base44.entities.Challenge.list("-start_date"),
+    staleTime: 60_000,
   });
 
   const { data: myEntries = [] } = useQuery({
-    queryKey: ["myEntries", user?.email],
+    queryKey: ["challenges", "myEntries", user?.email],
     queryFn: () => base44.entities.ChallengeEntry.filter({ user_email: user.email }),
     enabled: !!user?.email,
+    staleTime: 30_000,
   });
 
   const handleRefresh = async () => {
-    await Promise.all([
-      queryClient.invalidateQueries({ queryKey: ["challenges"] }),
-      queryClient.invalidateQueries({ queryKey: ["myEntries"] }),
-      queryClient.invalidateQueries({ queryKey: ["achievements"] }),
-    ]);
+    await queryClient.invalidateQueries({ queryKey: ["challenges"] });
   };
 
   // Filter logic

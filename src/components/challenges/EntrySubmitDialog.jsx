@@ -19,19 +19,21 @@ export default function EntrySubmitDialog({ challenge, open, onClose }) {
   const queryClient = useQueryClient();
 
   const { data: user } = useQuery({
-    queryKey: ["user"],
+    queryKey: ["challenges", "user"],
     queryFn: () => base44.auth.me(),
+    staleTime: 300_000,
   });
 
   const { data: strains = [] } = useQuery({
-    queryKey: ["userStrains"],
+    queryKey: ["challenges", "strains"],
     queryFn: () => base44.entities.Strain.list("-created_date"),
+    staleTime: 60_000,
   });
 
   const submitEntryMutation = useMutation({
     mutationFn: (entryData) => base44.entities.ChallengeEntry.create(entryData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["myEntries"] });
+      queryClient.invalidateQueries({ queryKey: ["challenges", "myEntries"] });
       toast.success("Entry submitted successfully! Good luck! 🍀");
       onClose();
     },
@@ -94,8 +96,9 @@ export default function EntrySubmitDialog({ challenge, open, onClose }) {
             <Label className="text-white/80">Select Strain *</Label>
             <MobileSelect
               value={selectedStrain}
-              onChange={setSelectedStrain}
+              onValueChange={setSelectedStrain}
               placeholder="Choose a strain"
+              label="Select Strain"
               options={strains.map(s => ({ value: s.id, label: s.name }))}
             />
           </div>

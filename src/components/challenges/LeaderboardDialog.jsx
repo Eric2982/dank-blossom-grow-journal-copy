@@ -13,23 +13,26 @@ export default function LeaderboardDialog({ challenge, open, onClose }) {
   const queryClient = useQueryClient();
 
   const { data: user } = useQuery({
-    queryKey: ["user"],
+    queryKey: ["challenges", "user"],
     queryFn: () => base44.auth.me(),
+    staleTime: 300_000,
   });
 
   const { data: entries = [], isLoading } = useQuery({
-    queryKey: ["challengeEntries", challenge.id],
+    queryKey: ["challenges", "entries", challenge.id],
     queryFn: () => base44.entities.ChallengeEntry.filter({ challenge_id: challenge.id }),
     enabled: open,
+    staleTime: 30_000,
   });
 
   const { data: myVotes = [] } = useQuery({
-    queryKey: ["myVotes", challenge.id, user?.email],
+    queryKey: ["challenges", "votes", challenge.id, user?.email],
     queryFn: () => base44.entities.ChallengeVote.filter({ 
       challenge_id: challenge.id,
       voter_email: user.email 
     }),
     enabled: !!user?.email && open,
+    staleTime: 30_000,
   });
 
   const voteMutation = useMutation({
@@ -54,25 +57,25 @@ export default function LeaderboardDialog({ challenge, open, onClose }) {
       }
     },
     onMutate: async (entryId) => {
-      await queryClient.cancelQueries({ queryKey: ["challengeEntries", challenge.id] });
-      await queryClient.cancelQueries({ queryKey: ["myVotes", challenge.id, user?.email] });
+      await queryClient.cancelQueries({ queryKey: ["challenges", "entries", challenge.id] });
+      await queryClient.cancelQueries({ queryKey: ["challenges", "votes", challenge.id, user?.email] });
 
-      const prevEntries = queryClient.getQueryData(["challengeEntries", challenge.id]);
-      const prevVotes = queryClient.getQueryData(["myVotes", challenge.id, user?.email]);
+      const prevEntries = queryClient.getQueryData(["challenges", "entries", challenge.id]);
+      const prevVotes = queryClient.getQueryData(["challenges", "votes", challenge.id, user?.email]);
 
       const existingVote = myVotes.find(v => v.entry_id === entryId);
-      queryClient.setQueryData(["challengeEntries", challenge.id], (old = []) =>
+      queryClient.setQueryData(["challenges", "entries", challenge.id], (old = []) =>
         old.map(e => e.id === entryId
           ? { ...e, vote_count: Math.max(0, (e.vote_count || 0) + (existingVote ? -1 : 1)) }
           : e
         )
       );
       if (existingVote) {
-        queryClient.setQueryData(["myVotes", challenge.id, user?.email], (old = []) =>
+        queryClient.setQueryData(["challenges", "votes", challenge.id, user?.email], (old = []) =>
           old.filter(v => v.entry_id !== entryId)
         );
       } else {
-        queryClient.setQueryData(["myVotes", challenge.id, user?.email], (old = []) => [
+        queryClient.setQueryData(["challenges", "votes", challenge.id, user?.email], (old = []) => [
           ...old,
           { entry_id: entryId, challenge_id: challenge.id, voter_email: user.email, id: `optimistic-${Date.now()}` }
         ]);
@@ -80,13 +83,13 @@ export default function LeaderboardDialog({ challenge, open, onClose }) {
       return { prevEntries, prevVotes };
     },
     onError: (_err, _vars, ctx) => {
-      if (ctx?.prevEntries) queryClient.setQueryData(["challengeEntries", challenge.id], ctx.prevEntries);
-      if (ctx?.prevVotes) queryClient.setQueryData(["myVotes", challenge.id, user?.email], ctx.prevVotes);
+      if (ctx?.prevEntries) queryClient.setQueryData(["challenges", "entries", challenge.id], ctx.prevEntries);
+      if (ctx?.prevVotes) queryClient.setQueryData(["challenges", "votes", challenge.id, user?.email], ctx.prevVotes);
       toast.error("Failed to register vote");
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["challengeEntries"] });
-      queryClient.invalidateQueries({ queryKey: ["myVotes"] });
+      queryClient.invalidateQueries({ queryKey: ["challenges", "entries"] });
+      queryClient.invalidateQueries({ queryKey: ["challenges", "votes"] });
     },
   });
 
