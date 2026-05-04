@@ -18,6 +18,7 @@ import NutrientsSection from "../components/grow/sections/NutrientsSection";
 import WateringSection from "../components/grow/sections/WateringSection";
 import FeedingSection from "../components/grow/sections/FeedingSection";
 import HarvestSection from "../components/grow/sections/HarvestSection";
+import GrowAdvisor from "../components/grow/GrowAdvisor";
 
 export default function StrainDetail() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -188,6 +189,11 @@ export default function StrainDetail() {
 
         {/* Analytics — uses shared readings query (already cached) */}
         <StrainAnalytics readings={readings} strain={strain} />
+
+        {/* AI Grow Advisor */}
+        <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
+          <GrowAdvisor strainId={strainId} strainName={strain.name} />
+        </div>
 
         {/* Independent Sections */}
         <GrowLogSection strainId={strainId} />
