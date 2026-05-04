@@ -54,6 +54,11 @@ export const AuthProvider = ({ children }) => {
         } else {
           setIsLoadingAuth(false);
           setIsAuthenticated(false);
+          // No token — treat as auth required so App.jsx redirects to login
+          setAuthError({
+            type: 'auth_required',
+            message: 'Authentication required'
+          });
         }
         setIsLoadingPublicSettings(false);
       } catch (appError) {
