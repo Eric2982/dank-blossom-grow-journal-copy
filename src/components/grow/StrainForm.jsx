@@ -17,6 +17,20 @@ export default function StrainForm({ open, onOpenChange, onSubmit, strain, key }
     if (open && !strain) setForm({ name: "", type: "hybrid", plant_type: "photoperiod", breeder: "", flowering_time_weeks: "", planted_date: "", flipped_to_flower_date: "", harvest_date: "", status: "active", notes: "" });
   }, [open]);
 
+  const calcHarvestDate = (flipped, weeks) => {
+    if (!flipped || !weeks) return form.harvest_date || "";
+    const d = new Date(flipped);
+    d.setDate(d.getDate() + parseInt(weeks) * 7);
+    return d.toISOString().slice(0, 10);
+  };
+
+  const handleFlippedOrWeeksChange = (newForm) => {
+    if (newForm.flipped_to_flower_date && newForm.flowering_time_weeks) {
+      newForm.harvest_date = calcHarvestDate(newForm.flipped_to_flower_date, newForm.flowering_time_weeks);
+    }
+    return newForm;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
@@ -104,7 +118,7 @@ export default function StrainForm({ open, onOpenChange, onSubmit, strain, key }
           </div>
           <div>
             <Label className="text-white/50 text-xs">Flowering Time (weeks)</Label>
-            <Input type="number" value={form.flowering_time_weeks} onChange={(e) => setForm({ ...form, flowering_time_weeks: e.target.value })}
+            <Input type="number" value={form.flowering_time_weeks} onChange={(e) => setForm(handleFlippedOrWeeksChange({ ...form, flowering_time_weeks: e.target.value }))}
               className="bg-white/5 border-white/10 text-white mt-1" placeholder="e.g. 8" />
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -122,7 +136,7 @@ export default function StrainForm({ open, onOpenChange, onSubmit, strain, key }
             <div>
               <Label className="text-white/50 text-xs">Flipped to Flower</Label>
               <div className="relative mt-1">
-                <Input type="date" value={form.flipped_to_flower_date || ""} onChange={(e) => setForm({ ...form, flipped_to_flower_date: e.target.value })}
+                <Input type="date" value={form.flipped_to_flower_date || ""} onChange={(e) => setForm(handleFlippedOrWeeksChange({ ...form, flipped_to_flower_date: e.target.value }))}
                   className="bg-white/5 border-white/10 text-white pr-8" />
                 {form.flipped_to_flower_date && (
                   <button type="button" onClick={() => setForm({ ...form, flipped_to_flower_date: "" })}
