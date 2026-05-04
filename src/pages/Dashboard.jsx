@@ -10,6 +10,7 @@ import PullToRefresh from "../components/PullToRefresh";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../components/utils";
 import WeatherWidget from "../components/dashboard/WeatherWidget";
+import HarvestAlertBanner from "../components/dashboard/HarvestAlertBanner";
 
 export default function Dashboard() {
   const [showStrainForm, setShowStrainForm] = useState(false);
@@ -82,6 +83,8 @@ export default function Dashboard() {
             <Plus className="w-4 h-4" /> Add Strain
           </Button>
         </div>
+
+        <HarvestAlertBanner />
 
         <WeatherWidget
           indoorTemp={latestReadings[0]?.temperature}
