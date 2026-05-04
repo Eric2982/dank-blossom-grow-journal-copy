@@ -19,6 +19,7 @@ import HarvestTracker from "../components/grow/HarvestTracker";
 import PullToRefresh from "../components/PullToRefresh";
 import { Badge } from "@/components/ui/badge";
 import ExportPDFButton from "../components/grow/ExportPDFButton";
+import GrowProgressTracker from "../components/grow/GrowProgressTracker";
 
 export default function StrainDetail() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -178,6 +179,8 @@ export default function StrainDetail() {
           {strain.flipped_to_flower_date && <div><div className="text-white/40 text-xs mb-1">Flipped</div><div className="text-sm text-white">{format(new Date(strain.flipped_to_flower_date), "MMM d, yyyy")}</div></div>}
         </div>
       </div>
+
+      <GrowProgressTracker strain={strain} />
 
       <StrainAnalytics readings={readings} strain={strain} />
 
