@@ -50,7 +50,13 @@ export default {
       });
     }
 
-    // Redirect all other requests to the canonical domain
+    // Pass through non-GET requests (POST, PUT, DELETE, etc.) without redirecting
+    // because browsers downgrade POST/PUT to GET on 301/302 redirects, causing 405 errors.
+    if (request.method !== "GET" && request.method !== "HEAD") {
+      return fetch(request);
+    }
+
+    // Redirect GET requests to the canonical domain
     const redirectUrl = new URL(request.url);
     redirectUrl.hostname = "dankblossom.app";
     return Response.redirect(redirectUrl.toString(), 301);
