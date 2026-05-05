@@ -12,7 +12,6 @@ const tabNavItems = [
   { name: "Chat", path: "/Chat", icon: MessageSquare, label: "Go to Chat" },
   { name: "Summary", path: "/Summary", icon: Zap, label: "Go to Summary" },
   { name: "Challenges", path: "/Challenges", icon: Trophy, label: "Go to Challenges" },
-  { name: "Settings", path: "/Settings", icon: Settings, label: "Go to Settings" },
 ];
 
 const sidebarNavItems = [

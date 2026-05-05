@@ -29,11 +29,9 @@ export default function Settings() {
 
   const { data: user, isLoading: userLoading } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
   const { data: subscription } = useQuery({
-    queryKey: ["subscription"],
-    queryFn: async () => {
-      const me = await base44.auth.me();
-      return base44.entities.Subscription.filter({ user_email: me.email });
-    },
+    queryKey: ["subscription", user?.email],
+    queryFn: () => base44.entities.Subscription.filter({ user_email: user.email }),
+    enabled: !!user?.email,
   });
   const { data: strains = [] } = useQuery({
     queryKey: ["strains"],
