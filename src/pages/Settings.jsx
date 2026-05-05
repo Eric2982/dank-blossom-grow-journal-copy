@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
+import { useAuth } from "@/lib/AuthContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -16,6 +17,7 @@ import { format } from "date-fns";
 import { IntegrityBadge } from "@/components/IntegrityGuard";
 
 export default function Settings() {
+  const { navigateToLogin } = useAuth();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
@@ -103,7 +105,7 @@ export default function Settings() {
       <div><h1 className="text-2xl font-light text-white">Profile & Settings</h1></div>
       <Card className="bg-white/[0.02] border-white/5 p-8 text-center">
         <p className="text-white/60 text-sm mb-4">Unable to load your profile. Please sign in again.</p>
-        <Button onClick={() => base44.auth.redirectToLogin()} className="bg-emerald-600 hover:bg-emerald-500">Sign In</Button>
+        <Button onClick={() => navigateToLogin()} className="bg-emerald-600 hover:bg-emerald-500">Sign In</Button>
       </Card>
     </div>
   );
