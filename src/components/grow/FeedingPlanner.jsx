@@ -25,7 +25,7 @@ export default function FeedingPlanner({ strainId, plans, onCreatePlan, onUpdate
       strain_id: strainId,
       week: parseInt(form.week),
       stage: form.stage,
-      target_ec: parseFloat(form.target_ec),
+      target_ec: form.target_ec ? parseFloat(form.target_ec) : undefined,
       target_ph: parseFloat(form.target_ph),
       notes: form.notes || undefined,
       completed: false,

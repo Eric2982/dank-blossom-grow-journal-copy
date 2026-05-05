@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Edit, ArrowLeft, Trash2, Sprout, Flower, X, Bell, BellOff, Camera, Image } from "lucide-react";
 import { createPageUrl } from "../components/utils";
 import { useNavigation } from "@/lib/NavigationContext";
@@ -26,6 +27,7 @@ export default function StrainDetail() {
   const { goBack, canGoBack } = useNavigation();
 
   const [showEditForm, setShowEditForm] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(() =>
     "Notification" in window && Notification.permission === "granted"
@@ -117,10 +119,9 @@ export default function StrainDetail() {
               <Edit className="w-3 h-3 mr-2" /> Edit
             </Button>
             <ExportPDFButton strain={strain} readings={readings} />
-            <Button onClick={() => deleteStrainMutation.mutate()} variant="outline" size="sm" className="border-red-500/20 text-red-400 hover:bg-red-500/10">
+            <Button onClick={() => setShowDeleteDialog(true)} variant="outline" size="sm" className="border-red-500/20 text-red-400 hover:bg-red-500/10">
               <Trash2 className="w-3 h-3 mr-2" /> Delete
-            </Button>
-          </div>
+            </Button>          </div>
         </div>
 
         {/* Photos */}
@@ -203,6 +204,23 @@ export default function StrainDetail() {
         <HarvestSection strainId={strainId} />
 
         <StrainForm open={showEditForm} onOpenChange={setShowEditForm} strain={strain} onSubmit={(data) => updateStrainMutation.mutate(data)} />
+
+        <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+          <AlertDialogContent className="bg-zinc-900 border-white/10">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-white">Delete {strain.name}?</AlertDialogTitle>
+              <AlertDialogDescription className="text-white/60">
+                This will permanently delete this strain and all associated data. This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="bg-white/5 text-white border-white/10 hover:bg-white/10">Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={() => deleteStrainMutation.mutate()} disabled={deleteStrainMutation.isPending} className="bg-red-600 hover:bg-red-700 text-white">
+                {deleteStrainMutation.isPending ? "Deleting..." : "Delete"}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </PullToRefresh>
   );

@@ -2,7 +2,7 @@ import React from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Trophy, Users, TrendingUp, CheckCircle, Clock, Leaf } from "lucide-react";
+import { Calendar, Trophy, Users, TrendingUp, CheckCircle, Clock } from "lucide-react";
 import { format, differenceInDays } from "date-fns";
 
 const challengeEmoji = {
