@@ -106,11 +106,7 @@ export default function Settings() {
       <Card className="bg-white/[0.02] border-white/5 p-8 text-center">
         <p className="text-white/60 text-sm mb-4">Unable to load your profile. Please sign in again.</p>
         <Button
-          onClick={() => {
-            localStorage.removeItem('base44_access_token');
-            localStorage.removeItem('token');
-            base44.auth.redirectToLogin();
-          }}
+          onClick={navigateToLogin}
           className="bg-emerald-600 hover:bg-emerald-500"
         >
           Sign In
