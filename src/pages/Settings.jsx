@@ -27,7 +27,7 @@ export default function Settings() {
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const queryClient = useQueryClient();
 
-  const { data: user } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
+  const { data: user, isLoading: userLoading } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
   const { data: subscription } = useQuery({
     queryKey: ["subscription", user?.email],
     queryFn: () => base44.entities.Subscription.filter({ user_email: user.email }),
@@ -78,7 +78,20 @@ export default function Settings() {
     deleteAccountMutation.mutate();
   };
 
-  if (!user) return <div className="flex items-center justify-center min-h-[60vh]"><p className="text-white/40">Loading...</p></div>;
+  if (userLoading) return (
+    <div className="max-w-2xl mx-auto space-y-6">
+      <div><h1 className="text-2xl font-light text-white">Profile & Settings</h1><p className="text-white/40 text-sm mt-1">Manage your account</p></div>
+      <Card className="bg-white/[0.02] border-white/5 p-6">
+        <div className="flex items-start gap-4">
+          <div className="w-20 h-20 rounded-full bg-white/10 animate-pulse" />
+          <div className="flex-1 space-y-2 pt-2">
+            <div className="h-5 bg-white/10 rounded animate-pulse w-40" />
+            <div className="h-4 bg-white/10 rounded animate-pulse w-56" />
+          </div>
+        </div>
+      </Card>
+    </div>
+  );
 
   return (
     <PullToRefresh onRefresh={() => Promise.all([queryClient.invalidateQueries({ queryKey: ["user"] }), queryClient.invalidateQueries({ queryKey: ["subscription"] })])}>
