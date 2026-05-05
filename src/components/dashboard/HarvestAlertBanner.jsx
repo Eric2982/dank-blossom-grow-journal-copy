@@ -30,20 +30,22 @@ export default function HarvestAlertBanner() {
         <p className="text-amber-300 text-sm font-medium">
           {upcoming.length} strain{upcoming.length > 1 ? "s" : ""} ready to harvest soon
         </p>
-        <p className="text-amber-400/70 text-xs mt-0.5 flex flex-wrap gap-x-2 gap-y-0.5">
+        <div className="text-amber-400/70 text-xs mt-0.5 flex flex-wrap gap-x-2 gap-y-0.5">
           {upcoming.map((s) => {
             const days = Math.ceil((new Date(s.harvest_date) - now) / (1000 * 60 * 60 * 24));
             return (
               <button
                 key={s.id}
+                type="button"
                 onClick={() => navigateTo(createPageUrl(`StrainDetail?id=${s.id}`))}
+                aria-label={`View details for ${s.name}`}
                 className="underline underline-offset-2 hover:text-amber-300 transition-colors"
               >
                 {s.name} ({days}d)
               </button>
             );
           })}
-        </p>
+        </div>
       </div>
     </div>
   );
