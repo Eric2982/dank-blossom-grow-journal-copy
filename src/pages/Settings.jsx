@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { User, Trash2, Crown, Shield, FileText, ChevronDown, Camera, Edit2, Leaf, BookOpen } from "lucide-react";
+import { User, Trash2, Crown, Shield, FileText, ChevronDown, Camera, Edit2, Leaf, BookOpen, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import CancelSubscriptionButton from "../components/settings/CancelSubscriptionButton";
 import { Badge } from "@/components/ui/badge";
@@ -197,6 +197,23 @@ export default function Settings() {
             <ChevronDown className={`w-5 h-5 text-white/40 transition-transform ${showRegulatory ? 'rotate-180' : ''}`} />
           </button>
           {showRegulatory && <div className="pt-4 border-t border-white/5 mt-4 text-white/60 text-sm space-y-3"><p>Dank Blossom is an informational tool only. Users are solely responsible for compliance with all applicable laws. Age verification required (21+).</p><div className="flex items-center gap-2 pt-1"><span className="text-white/30 text-xs">App verification:</span><IntegrityBadge /></div></div>}
+        </Card>
+
+        <Card className="bg-white/[0.02] border-white/5 p-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
+                <LogOut className="w-5 h-5 text-red-400" />
+              </div>
+              <div>
+                <h3 className="text-white font-medium">Sign Out</h3>
+                <p className="text-white/40 text-sm">Log out of your account</p>
+              </div>
+            </div>
+            <Button variant="outline" onClick={() => base44.auth.logout()} className="border-red-500/20 text-red-400 hover:bg-red-500/10">
+              Sign Out
+            </Button>
+          </div>
         </Card>
 
         <Card className="bg-red-950/20 border-red-500/20 p-6">
