@@ -77,7 +77,7 @@ export default function Settings() {
     deleteAccountMutation.mutate();
   };
 
-  if (userLoading) return (
+  if (userLoading || !user) return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div><h1 className="text-2xl font-light text-white">Profile & Settings</h1><p className="text-white/40 text-sm mt-1">Manage your account</p></div>
       <Card className="bg-white/[0.02] border-white/5 p-6">
@@ -168,7 +168,7 @@ export default function Settings() {
               <Crown className="w-5 h-5 text-amber-500 mt-0.5" />
               <div className="flex-1">
                 <h3 className="text-white font-medium mb-1">Premium Subscription</h3>
-                <p className="text-white/60 text-sm mb-4">Active until {new Date(subscription[0].current_period_end).toLocaleDateString()}</p>
+                <p className="text-white/60 text-sm mb-4">Active until {subscription?.[0]?.current_period_end ? new Date(subscription[0].current_period_end).toLocaleDateString() : "—"}</p>
                 <CancelSubscriptionButton />
               </div>
             </div>
