@@ -13,7 +13,7 @@ export default function CancelSubscriptionButton() {
   const cancelMutation = useMutation({
     mutationFn: () => base44.functions.invoke("cancelSubscription", {}),
     onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["subscription"] });
+      queryClient.invalidateQueries({ queryKey: ["subscription"], exact: false });
       toast.success("Subscription canceled. You'll retain access until the end of your billing period.");
       setShowConfirmDialog(false);
     },

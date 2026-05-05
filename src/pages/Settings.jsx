@@ -27,7 +27,12 @@ export default function Settings() {
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const queryClient = useQueryClient();
 
-  const { data: user, isLoading: userLoading } = useQuery({ queryKey: ["user"], queryFn: () => base44.auth.me() });
+  const { data: user, isLoading: userLoading, isError: userError } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => base44.auth.me(),
+    retry: 2,
+    staleTime: 30000,
+  });
   const { data: subscription } = useQuery({
     queryKey: ["subscription", user?.email],
     queryFn: () => base44.entities.Subscription.filter({ user_email: user.email }),
@@ -78,7 +83,7 @@ export default function Settings() {
     deleteAccountMutation.mutate();
   };
 
-  if (userLoading || !user) return (
+  if (userLoading) return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div><h1 className="text-2xl font-light text-white">Profile & Settings</h1><p className="text-white/40 text-sm mt-1">Manage your account</p></div>
       <Card className="bg-white/[0.02] border-white/5 p-6">
@@ -89,6 +94,16 @@ export default function Settings() {
             <div className="h-4 bg-white/10 rounded animate-pulse w-56" />
           </div>
         </div>
+      </Card>
+    </div>
+  );
+
+  if (userError || !user) return (
+    <div className="max-w-2xl mx-auto space-y-6">
+      <div><h1 className="text-2xl font-light text-white">Profile & Settings</h1></div>
+      <Card className="bg-white/[0.02] border-white/5 p-8 text-center">
+        <p className="text-white/60 text-sm mb-4">Unable to load your profile. Please sign in again.</p>
+        <Button onClick={() => base44.auth.redirectToLogin()} className="bg-emerald-600 hover:bg-emerald-500">Sign In</Button>
       </Card>
     </div>
   );
