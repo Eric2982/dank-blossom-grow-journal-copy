@@ -102,8 +102,8 @@ export default function Settings() {
     <div className="max-w-2xl mx-auto space-y-6">
       <div><h1 className="text-2xl font-light text-white">Profile & Settings</h1></div>
       <Card className="bg-white/[0.02] border-white/5 p-8 text-center">
-        <p className="text-white/60 text-sm mb-4">Unable to load your profile. Please try refreshing.</p>
-        <Button onClick={() => queryClient.invalidateQueries({ queryKey: ["user"] })} className="bg-emerald-600 hover:bg-emerald-500">Retry</Button>
+        <p className="text-white/60 text-sm mb-4">Unable to load your profile. Please sign in again.</p>
+        <Button onClick={() => base44.auth.redirectToLogin()} className="bg-emerald-600 hover:bg-emerald-500">Sign In</Button>
       </Card>
     </div>
   );
