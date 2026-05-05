@@ -22,6 +22,7 @@ const sidebarNavItems = [
   { name: "Nutrients", path: "/Nutrients", icon: Leaf, label: "Go to Nutrients" },
   { name: "Store", path: "/Store", icon: ShoppingBag, label: "Go to Store" },
   { name: "Premium", path: "/Premium", icon: Crown, label: "Go to Premium" },
+  { name: "Settings", path: "/Settings", icon: Settings, label: "Go to Settings" },
 ];
 
 const slideVariants = {
