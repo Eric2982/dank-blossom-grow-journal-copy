@@ -2,9 +2,11 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { AlertTriangle } from "lucide-react";
-import { Link } from "react-router-dom";
+import { createPageUrl } from "@/components/utils";
+import { useNavigation } from "@/lib/NavigationContext";
 
 export default function HarvestAlertBanner() {
+  const { navigateTo } = useNavigation();
   const { data: strains = [] } = useQuery({
     queryKey: ["strains-harvest-check"],
     queryFn: () => base44.entities.Strain.list(),
@@ -28,11 +30,19 @@ export default function HarvestAlertBanner() {
         <p className="text-amber-300 text-sm font-medium">
           {upcoming.length} strain{upcoming.length > 1 ? "s" : ""} ready to harvest soon
         </p>
-        <p className="text-amber-400/70 text-xs mt-0.5">
+        <p className="text-amber-400/70 text-xs mt-0.5 flex flex-wrap gap-x-2 gap-y-0.5">
           {upcoming.map((s) => {
             const days = Math.ceil((new Date(s.harvest_date) - now) / (1000 * 60 * 60 * 24));
-            return `${s.name} (${days}d)`;
-          }).join(" · ")}
+            return (
+              <button
+                key={s.id}
+                onClick={() => navigateTo(createPageUrl(`StrainDetail?id=${s.id}`))}
+                className="underline underline-offset-2 hover:text-amber-300 transition-colors"
+              >
+                {s.name} ({days}d)
+              </button>
+            );
+          })}
         </p>
       </div>
     </div>

@@ -1,8 +1,7 @@
 import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trophy, Users, Star, Zap, Calendar, Leaf } from "lucide-react";
+import { Trophy } from "lucide-react";
 
 const skillInfo = [
   { level: "Beginner", emoji: "🌱", color: "text-emerald-400", desc: "Perfect for first-time or early growers. Focused on fundamentals like pH, VPD, consistency, and your first harvest." },
