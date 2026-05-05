@@ -35,7 +35,8 @@ export default function Settings() {
   });
   const { data: strains = [] } = useQuery({
     queryKey: ["strains"],
-    queryFn: () => base44.entities.Strain.list("-created_date"),
+    queryFn: () => base44.entities.Strain.list("-created_date", 50),
+    enabled: !!user?.email,
   });
 
   const isPremium = subscription?.[0]?.status === "active";
@@ -93,7 +94,7 @@ export default function Settings() {
   );
 
   return (
-    <PullToRefresh onRefresh={() => Promise.all([queryClient.invalidateQueries({ queryKey: ["user"] }), queryClient.invalidateQueries({ queryKey: ["subscription"] })])}>
+    <PullToRefresh onRefresh={() => Promise.all([queryClient.invalidateQueries({ queryKey: ["user"] }), queryClient.invalidateQueries({ queryKey: ["subscription", user?.email] }), queryClient.invalidateQueries({ queryKey: ["strains"] })])}>
       <div className="max-w-2xl mx-auto space-y-6">
         <div><h1 className="text-2xl font-light text-white">Profile & Settings</h1><p className="text-white/40 text-sm mt-1">Manage your account</p></div>
 
