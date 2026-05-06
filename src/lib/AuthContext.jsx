@@ -140,8 +140,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const navigateToLogin = () => {
-    // Use the SDK's redirectToLogin method
-    base44.auth.redirectToLogin(window.location.href);
+    // Redirect to login and return to the app root (Dashboard) after successful login
+    const appRoot = window.location.origin + '/';
+    base44.auth.redirectToLogin(appRoot);
   };
 
   return (
