@@ -141,8 +141,7 @@ export const AuthProvider = ({ children }) => {
 
   const navigateToLogin = () => {
     // Redirect to login and return to the app root (Dashboard) after successful login
-    const appRoot = window.location.origin + '/';
-    base44.auth.redirectToLogin(appRoot);
+    base44.auth.redirectToLogin();
   };
 
   return (
