@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  const checkAuth = async () => {
+  const checkAuth = async (retryCount = 0) => {
     try {
       setIsLoadingAuth(true);
       setAuthError(null);
@@ -21,6 +21,14 @@ export const AuthProvider = ({ children }) => {
       setUser(currentUser);
       setIsAuthenticated(true);
     } catch (error) {
+      // If there's an access_token in the URL, wait briefly and retry once
+      // to allow the SDK to establish the session from the token
+      const hasToken = new URLSearchParams(window.location.search).get('access_token');
+      if (hasToken && retryCount < 2) {
+        setTimeout(() => checkAuth(retryCount + 1), 500);
+        return;
+      }
+
       setIsAuthenticated(false);
       setUser(null);
       if (error?.status === 403 && error?.data?.extra_data?.reason === 'user_not_registered') {

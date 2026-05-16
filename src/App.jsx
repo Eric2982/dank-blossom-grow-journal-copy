@@ -45,7 +45,8 @@ const AuthenticatedApp = () => {
   }
 
   if (authError?.type === 'auth_required') {
-    base44.auth.redirectToLogin(window.location.origin + '/');
+    // Use setTimeout to avoid calling during render cycle
+    setTimeout(() => base44.auth.redirectToLogin(window.location.origin + '/'), 0);
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-zinc-950">
         <div className="w-8 h-8 border-4 border-zinc-700 border-t-emerald-500 rounded-full animate-spin"></div>
