@@ -2,6 +2,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import PageNotFound from './lib/PageNotFound';
 import { base44 } from '@/api/base44Client';
 
@@ -29,15 +30,23 @@ const LayoutWrapper = ({ children, currentPageName }) => (
   <Layout currentPageName={currentPageName}>{children}</Layout>
 );
 
+const Spinner = () => (
+  <div className="fixed inset-0 flex items-center justify-center bg-zinc-950">
+    <div className="w-8 h-8 border-4 border-zinc-700 border-t-emerald-500 rounded-full animate-spin"></div>
+  </div>
+);
+
 const AuthenticatedApp = () => {
   const { isLoadingAuth, authError } = useAuth();
 
+  useEffect(() => {
+    if (!isLoadingAuth && authError?.type === 'auth_required') {
+      base44.auth.redirectToLogin(window.location.origin + '/');
+    }
+  }, [isLoadingAuth, authError]);
+
   if (isLoadingAuth) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-zinc-950">
-        <div className="w-8 h-8 border-4 border-zinc-700 border-t-emerald-500 rounded-full animate-spin"></div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (authError?.type === 'user_not_registered') {
@@ -45,13 +54,7 @@ const AuthenticatedApp = () => {
   }
 
   if (authError?.type === 'auth_required') {
-    // Use setTimeout to avoid calling during render cycle
-    setTimeout(() => base44.auth.redirectToLogin(window.location.origin + '/'), 0);
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-zinc-950">
-        <div className="w-8 h-8 border-4 border-zinc-700 border-t-emerald-500 rounded-full animate-spin"></div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   return (

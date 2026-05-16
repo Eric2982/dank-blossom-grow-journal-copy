@@ -13,31 +13,27 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  const checkAuth = async (retryCount = 0) => {
+  const checkAuth = async () => {
+    setIsLoadingAuth(true);
+    setAuthError(null);
     try {
-      setIsLoadingAuth(true);
-      setAuthError(null);
       const currentUser = await base44.auth.me();
       setUser(currentUser);
       setIsAuthenticated(true);
+      setIsLoadingAuth(false);
     } catch (error) {
-      // If there's an access_token in the URL, wait briefly and retry once
-      // to allow the SDK to establish the session from the token
-      const hasToken = new URLSearchParams(window.location.search).get('access_token');
-      if (hasToken && retryCount < 2) {
-        setTimeout(() => checkAuth(retryCount + 1), 500);
-        return;
-      }
-
       setIsAuthenticated(false);
       setUser(null);
       if (error?.status === 403 && error?.data?.extra_data?.reason === 'user_not_registered') {
         setAuthError({ type: 'user_not_registered', message: 'User not registered for this app' });
+        setIsLoadingAuth(false);
       } else {
-        setAuthError({ type: 'auth_required', message: 'Authentication required' });
+        // Delay before showing auth_required to avoid race on post-login redirect
+        setTimeout(() => {
+          setAuthError({ type: 'auth_required', message: 'Authentication required' });
+          setIsLoadingAuth(false);
+        }, 1500);
       }
-    } finally {
-      setIsLoadingAuth(false);
     }
   };
 
