@@ -23,7 +23,7 @@ const getAppParams = () => {
   }
 
   const appId = import.meta.env.VITE_BASE44_APP_ID || "6994e0c98fb6b9d1d4521dbd";
-  const defaultAppBaseUrl = import.meta.env.VITE_BASE44_APP_BASE_URL || window.location.origin;
+  const defaultAppBaseUrl = import.meta.env.VITE_BASE44_APP_BASE_URL || null;
 
   return {
     appId,
