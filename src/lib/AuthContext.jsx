@@ -20,20 +20,16 @@ export const AuthProvider = ({ children }) => {
       const currentUser = await base44.auth.me();
       setUser(currentUser);
       setIsAuthenticated(true);
-      setIsLoadingAuth(false);
     } catch (error) {
       setIsAuthenticated(false);
       setUser(null);
       if (error?.status === 403 && error?.data?.extra_data?.reason === 'user_not_registered') {
         setAuthError({ type: 'user_not_registered', message: 'User not registered for this app' });
-        setIsLoadingAuth(false);
       } else {
-        // Delay before showing auth_required to avoid race on post-login redirect
-        setTimeout(() => {
-          setAuthError({ type: 'auth_required', message: 'Authentication required' });
-          setIsLoadingAuth(false);
-        }, 1500);
+        setAuthError({ type: 'auth_required', message: 'Authentication required' });
       }
+    } finally {
+      setIsLoadingAuth(false);
     }
   };
 
