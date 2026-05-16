@@ -15,14 +15,14 @@ const getAppParamValue = (paramName, { defaultValue = undefined, removeFromUrl =
 const getAppParams = () => {
   if (isNode) {
     return {
-      appId: import.meta.env?.VITE_BASE44_APP_ID || "69be6d60d8aa3924e66d8e69",
+      appId: import.meta.env?.VITE_BASE44_APP_ID || "6994e0c98fb6b9d1d4521dbd",
       token: null,
       functionsVersion: null,
       appBaseUrl: null,
     };
   }
 
-  const appId = import.meta.env.VITE_BASE44_APP_ID || "69be6d60d8aa3924e66d8e69";
+  const appId = import.meta.env.VITE_BASE44_APP_ID || "6994e0c98fb6b9d1d4521dbd";
   const defaultAppBaseUrl = import.meta.env.VITE_BASE44_APP_BASE_URL || window.location.origin;
 
   return {
