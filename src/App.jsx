@@ -41,39 +41,49 @@ const AuthCallbackHandler = () => {
 };
 
 const AuthenticatedApp = () => {
-  const { isLoadingAuth, authError, isAuthenticated } = useAuth();
+  const { isLoadingAuth, authError, isAuthenticated, user } = useAuth();
+
+  useEffect(() => {
+    console.log('[Router] Auth state changed — isLoadingAuth:', isLoadingAuth, '| isAuthenticated:', isAuthenticated, '| authError:', authError?.type ?? 'none', '| pathname:', window.location.pathname);
+  }, [isLoadingAuth, isAuthenticated, authError]);
 
   useEffect(() => {
     if (!isLoadingAuth && authError?.type === 'auth_required') {
+      console.warn('[Router] auth_required — redirecting to login. Current URL:', window.location.href);
       base44.auth.redirectToLogin(window.location.origin + '/');
     }
   }, [isLoadingAuth, authError]);
 
   // After auth check completes and user is authenticated, ensure we're on a valid route.
-  // If the current path is not recognized (e.g. post-login callback left us on /auth or similar),
-  // hard-redirect to dashboard so the router re-initializes cleanly.
   useEffect(() => {
     if (!isLoadingAuth && isAuthenticated) {
       const validPaths = ['/', '/Dashboard', '/Analytics', '/Challenges', '/Chat', '/Community', '/Learn', '/Nutrients', '/Premium', '/Settings', '/Store', '/StrainDetail', '/Summary'];
       const currentPath = window.location.pathname;
       const isValid = validPaths.some(p => currentPath === p || currentPath.startsWith(p + '/'));
+      console.log('[Router] Authenticated — path:', currentPath, '| isValidRoute:', isValid, '| user:', user?.email);
       if (!isValid) {
+        console.warn('[Router] Unknown path after auth — hard-redirecting to /');
         window.location.replace('/');
       }
     }
   }, [isLoadingAuth, isAuthenticated]);
 
   if (isLoadingAuth) {
+    console.log('[Router] Rendering: <Spinner> (loading auth)');
     return <Spinner />;
   }
 
   if (authError?.type === 'user_not_registered') {
+    console.warn('[Router] Rendering: <UserNotRegisteredError>');
     return <UserNotRegisteredError />;
   }
 
   if (authError?.type === 'auth_required') {
+    console.warn('[Router] Rendering: <Spinner> (auth_required, awaiting redirect)');
     return <Spinner />;
   }
+
+  console.log('[Router] Rendering: <Routes> — user:', user?.email, '| path:', window.location.pathname);
 
   return (
     <Routes>

@@ -12,10 +12,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const hasAccessToken = urlParams.has('access_token');
+    console.log('[Auth] Init — pathname:', window.location.pathname, '| search:', window.location.search, '| hasAccessToken:', hasAccessToken);
     if (hasAccessToken) {
-      // The SDK (app-params.js) has already consumed the token from the URL.
-      // Hard-redirect to root so the app re-mounts cleanly at "/" without
-      // stale URL params, triggering a fresh auth check from a clean state.
+      console.log('[Auth] access_token detected in URL — hard-redirecting to / for clean mount');
       window.location.replace('/');
       return;
     }
@@ -25,16 +24,22 @@ export const AuthProvider = ({ children }) => {
   const checkAuth = async () => {
     setIsLoadingAuth(true);
     setAuthError(null);
+    console.log('[Auth] checkAuth() called — pathname:', window.location.pathname);
     try {
       const currentUser = await base44.auth.me();
+      console.log('[Auth] base44.auth.me() success — user:', currentUser?.email, '| role:', currentUser?.role, '| id:', currentUser?.id);
       setUser(currentUser);
       setIsAuthenticated(true);
     } catch (error) {
+      console.error('[Auth] base44.auth.me() threw an error:', error);
+      console.error('[Auth] error.status:', error?.status, '| error.data:', JSON.stringify(error?.data));
       setIsAuthenticated(false);
       setUser(null);
       if (error?.status === 403 && error?.data?.extra_data?.reason === 'user_not_registered') {
+        console.warn('[Auth] Setting authError: user_not_registered');
         setAuthError({ type: 'user_not_registered', message: 'User not registered for this app' });
       } else {
+        console.warn('[Auth] Setting authError: auth_required');
         setAuthError({ type: 'auth_required', message: 'Authentication required' });
       }
     } finally {
