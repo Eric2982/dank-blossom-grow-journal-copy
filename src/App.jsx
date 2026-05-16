@@ -3,7 +3,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
-import { useEffect } from 'react';
+import { base44 } from '@/api/base44Client';
 
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
@@ -30,13 +30,7 @@ const LayoutWrapper = ({ children, currentPageName }) => (
 );
 
 const AuthenticatedApp = () => {
-  const { isLoadingAuth, authError, navigateToLogin } = useAuth();
-
-  useEffect(() => {
-    if (!isLoadingAuth && authError?.type === 'auth_required') {
-      navigateToLogin();
-    }
-  }, [isLoadingAuth, authError]);
+  const { isLoadingAuth, authError } = useAuth();
 
   if (isLoadingAuth) {
     return (
@@ -51,6 +45,7 @@ const AuthenticatedApp = () => {
   }
 
   if (authError?.type === 'auth_required') {
+    base44.auth.redirectToLogin(window.location.origin + '/');
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-zinc-950">
         <div className="w-8 h-8 border-4 border-zinc-700 border-t-emerald-500 rounded-full animate-spin"></div>
