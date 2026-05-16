@@ -10,7 +10,6 @@
     - dankblossom.app
 
   Packages covered:
-    - com.base69be6d60d8aa3924e66d8e69.app
     - com.base6994e0c98fb6b9d1d4521dbd.app
 -->
 
@@ -18,33 +17,11 @@
   <application>
 
     <!-- ============================================================
-         Package: com.base69be6d60d8aa3924e66d8e69.app
-         Activity: com.wix.MainActivity
-         ============================================================ -->
-    <activity
-        android:name="com.wix.MainActivity"
-        android:exported="true">
-
-      <!-- Domain: dankblossom.app -->
-      <intent-filter android:autoVerify="true">
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <!-- http delegates to https; do not add other schemes -->
-        <data android:scheme="http" />
-        <data android:scheme="https" />
-        <data android:host="dankblossom.app" />
-        <data android:host="*.dankblossom.app" />
-      </intent-filter>
-
-    </activity>
-
-    <!-- ============================================================
          Package: com.base6994e0c98fb6b9d1d4521dbd.app
-         Activity: com.wix.MainActivity
+         Activity: com.dankblossom.MainActivity
          ============================================================ -->
     <activity
-        android:name="com.wix.MainActivity"
+        android:name="com.dankblossom.MainActivity"
         android:exported="true">
 
       <!-- Domain: dankblossom.app -->
@@ -52,10 +29,8 @@
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="http" />
-        <data android:scheme="https" />
-        <data android:host="dankblossom.app" />
-        <data android:host="*.dankblossom.app" />
+        <data android:scheme="http" android:host="dankblossom.app" />
+        <data android:scheme="https" android:host="dankblossom.app" />
       </intent-filter>
 
     </activity>
