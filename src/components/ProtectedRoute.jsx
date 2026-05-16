@@ -4,34 +4,27 @@ import { useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
 const DefaultFallback = () => (
-  <div className="fixed inset-0 flex items-center justify-center">
-    <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+  <div className="fixed inset-0 flex items-center justify-center bg-zinc-950">
+    <div className="w-8 h-8 border-4 border-zinc-700 border-t-emerald-500 rounded-full animate-spin"></div>
   </div>
 );
 
-export default function ProtectedRoute({ fallback = <DefaultFallback />, unauthenticatedElement }) {
-  const { isAuthenticated, isLoadingAuth, authChecked, authError, checkUserAuth } = useAuth();
+export default function ProtectedRoute({ fallback = <DefaultFallback /> }) {
+  const { isAuthenticated, isLoadingAuth, authError, navigateToLogin } = useAuth();
 
   useEffect(() => {
-    if (!authChecked && !isLoadingAuth) {
-      checkUserAuth();
+    if (!isLoadingAuth && authError?.type === 'auth_required') {
+      navigateToLogin();
     }
-  }, [authChecked, isLoadingAuth, checkUserAuth]);
+  }, [isLoadingAuth, authError, navigateToLogin]);
 
-  if (isLoadingAuth || !authChecked) {
-    return fallback;
+  if (isLoadingAuth) return fallback;
+
+  if (authError?.type === 'user_not_registered') {
+    return <UserNotRegisteredError />;
   }
 
-  if (authError) {
-    if (authError.type === 'user_not_registered') {
-      return <UserNotRegisteredError />;
-    }
-    return unauthenticatedElement;
-  }
-
-  if (!isAuthenticated) {
-    return unauthenticatedElement;
-  }
+  if (!isAuthenticated) return fallback;
 
   return <Outlet />;
 }
