@@ -1,4 +1,5 @@
 const isNode = typeof window === 'undefined';
+const DEFAULT_BASE44_APP_BASE_URL = 'https://base44.app';
 
 const getAppParamValue = (paramName, { defaultValue = undefined, removeFromUrl = false } = {}) => {
   if (isNode) return defaultValue;
@@ -18,12 +19,12 @@ const getAppParams = () => {
       appId: import.meta.env?.VITE_BASE44_APP_ID || "6994e0c98fb6b9d1d4521dbd",
       token: null,
       functionsVersion: null,
-      appBaseUrl: null,
+      appBaseUrl: import.meta.env?.VITE_BASE44_APP_BASE_URL || DEFAULT_BASE44_APP_BASE_URL,
     };
   }
 
   const appId = import.meta.env.VITE_BASE44_APP_ID || "6994e0c98fb6b9d1d4521dbd";
-  const defaultAppBaseUrl = import.meta.env.VITE_BASE44_APP_BASE_URL || null;
+  const defaultAppBaseUrl = import.meta.env.VITE_BASE44_APP_BASE_URL || DEFAULT_BASE44_APP_BASE_URL;
 
   return {
     appId,

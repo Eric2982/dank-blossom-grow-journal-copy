@@ -19,7 +19,7 @@ Any change pushed to the repo will also be reflected in the Base44 Builder.
 
 ```
 VITE_BASE44_APP_ID=your_app_id
-VITE_BASE44_APP_BASE_URL=your_backend_url # optional; defaults to same-origin in browser
+VITE_BASE44_APP_BASE_URL=your_backend_url # optional; defaults to https://base44.app
 
 e.g.
 VITE_BASE44_APP_ID=6994e0c98fb6b9d1d4521dbd
