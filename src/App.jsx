@@ -13,6 +13,7 @@ import IntegrityGuard from '@/components/IntegrityGuard';
 import Layout from './Layout';
 
 // Page imports
+import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Analytics from './pages/Analytics';
 import Challenges from './pages/Challenges';
@@ -89,8 +90,8 @@ const AuthenticatedApp = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<LayoutWrapper currentPageName="Dashboard"><Dashboard /></LayoutWrapper>} />
-      <Route path="/Dashboard" element={<Navigate to="/" replace />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/Dashboard" element={<LayoutWrapper currentPageName="Dashboard"><Dashboard /></LayoutWrapper>} />
       {/* Auth callback paths — always redirect to home after token is consumed */}
       <Route path="/auth" element={<AuthCallbackHandler />} />
       <Route path="/auth/*" element={<AuthCallbackHandler />} />
