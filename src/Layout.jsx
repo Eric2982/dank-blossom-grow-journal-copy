@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut, Home, MessageSquare, Users, BookOpen, Leaf, Zap, Trophy, ShoppingBag, Settings, Crown, BarChart2 } from "lucide-react";
+import { Menu, X, LogOut, Home, MessageSquare, Users, BookOpen, Leaf, Zap, Trophy, ShoppingBag, Settings, Crown, BarChart2, FileText } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigation } from "@/lib/NavigationContext";
@@ -97,7 +97,15 @@ export default function Layout({ children, currentPageName }) {
           })}
         </nav>
 
-        <div className="p-4 border-t border-white/5">
+        <div className="p-4 border-t border-white/5 space-y-2">
+          <a
+            href="https://doc-hosting.flycricket.io/dank-blossom-grow-journal-terms-of-use/133e87e4-50a4-431c-a96f-2fe3c9cbba63/terms"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-white/40 hover:text-white/70 transition-colors text-xs"
+          >
+            <FileText className="w-4 h-4" aria-hidden="true" /> Privacy Policy
+          </a>
           <Button
             onClick={() => base44.auth.logout()}
             variant="outline"
