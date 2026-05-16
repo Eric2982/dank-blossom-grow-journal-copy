@@ -10,15 +10,16 @@ export const AuthProvider = ({ children }) => {
   const [authError, setAuthError] = useState(null);
 
   useEffect(() => {
-    // If there's an access_token in the URL (post-login redirect), give the SDK
-    // a tick to consume it before checking auth state.
     const urlParams = new URLSearchParams(window.location.search);
-    const hasToken = urlParams.has('access_token') || urlParams.has('_preview_token');
-    if (hasToken) {
-      setTimeout(checkAuth, 50);
-    } else {
-      checkAuth();
+    const hasAccessToken = urlParams.has('access_token');
+    if (hasAccessToken) {
+      // The SDK (app-params.js) has already consumed the token from the URL.
+      // Hard-redirect to root so the app re-mounts cleanly at "/" without
+      // stale URL params, triggering a fresh auth check from a clean state.
+      window.location.replace('/');
+      return;
     }
+    checkAuth();
   }, []);
 
   const checkAuth = async () => {

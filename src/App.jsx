@@ -37,19 +37,31 @@ const Spinner = () => (
 );
 
 const AuthCallbackHandler = () => {
-  // If we land on /auth or any auth callback path, redirect to home.
-  // The access_token in the URL is already consumed by app-params.js on init.
   return <Navigate to="/" replace />;
 };
 
 const AuthenticatedApp = () => {
-  const { isLoadingAuth, authError } = useAuth();
+  const { isLoadingAuth, authError, isAuthenticated } = useAuth();
 
   useEffect(() => {
     if (!isLoadingAuth && authError?.type === 'auth_required') {
       base44.auth.redirectToLogin(window.location.origin + '/');
     }
   }, [isLoadingAuth, authError]);
+
+  // After auth check completes and user is authenticated, ensure we're on a valid route.
+  // If the current path is not recognized (e.g. post-login callback left us on /auth or similar),
+  // hard-redirect to dashboard so the router re-initializes cleanly.
+  useEffect(() => {
+    if (!isLoadingAuth && isAuthenticated) {
+      const validPaths = ['/', '/Dashboard', '/Analytics', '/Challenges', '/Chat', '/Community', '/Learn', '/Nutrients', '/Premium', '/Settings', '/Store', '/StrainDetail', '/Summary'];
+      const currentPath = window.location.pathname;
+      const isValid = validPaths.some(p => currentPath === p || currentPath.startsWith(p + '/'));
+      if (!isValid) {
+        window.location.replace('/');
+      }
+    }
+  }, [isLoadingAuth, isAuthenticated]);
 
   if (isLoadingAuth) {
     return <Spinner />;
