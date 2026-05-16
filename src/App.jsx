@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import PageNotFound from './lib/PageNotFound';
 import { base44 } from '@/api/base44Client';
@@ -42,6 +42,7 @@ const AuthCallbackHandler = () => {
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, authError, isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log('[Router] Auth state changed — isLoadingAuth:', isLoadingAuth, '| isAuthenticated:', isAuthenticated, '| authError:', authError?.type ?? 'none', '| pathname:', window.location.pathname);
@@ -55,6 +56,7 @@ const AuthenticatedApp = () => {
   }, [isLoadingAuth, authError]);
 
   // After auth check completes and user is authenticated, ensure we're on a valid route.
+  // Use React Router's navigate() so the layout updates in-place without a hard reload.
   useEffect(() => {
     if (!isLoadingAuth && isAuthenticated) {
       const validPaths = ['/', '/Dashboard', '/Analytics', '/Challenges', '/Chat', '/Community', '/Learn', '/Nutrients', '/Premium', '/Settings', '/Store', '/StrainDetail', '/Summary'];
@@ -62,11 +64,11 @@ const AuthenticatedApp = () => {
       const isValid = validPaths.some(p => currentPath === p || currentPath.startsWith(p + '/'));
       console.log('[Router] Authenticated — path:', currentPath, '| isValidRoute:', isValid, '| user:', user?.email);
       if (!isValid) {
-        console.warn('[Router] Unknown path after auth — hard-redirecting to /');
-        window.location.replace('/');
+        console.warn('[Router] Unknown path after auth — navigating to /');
+        navigate('/', { replace: true });
       }
     }
-  }, [isLoadingAuth, isAuthenticated]);
+  }, [isLoadingAuth, isAuthenticated, navigate]);
 
   if (isLoadingAuth) {
     console.log('[Router] Rendering: <Spinner> (loading auth)');
