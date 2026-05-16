@@ -36,6 +36,12 @@ const Spinner = () => (
   </div>
 );
 
+const AuthCallbackHandler = () => {
+  // If we land on /auth or any auth callback path, redirect to home.
+  // The access_token in the URL is already consumed by app-params.js on init.
+  return <Navigate to="/" replace />;
+};
+
 const AuthenticatedApp = () => {
   const { isLoadingAuth, authError } = useAuth();
 
@@ -61,6 +67,9 @@ const AuthenticatedApp = () => {
     <Routes>
       <Route path="/" element={<LayoutWrapper currentPageName="Dashboard"><Dashboard /></LayoutWrapper>} />
       <Route path="/Dashboard" element={<Navigate to="/" replace />} />
+      {/* Auth callback paths — always redirect to home after token is consumed */}
+      <Route path="/auth" element={<AuthCallbackHandler />} />
+      <Route path="/auth/*" element={<AuthCallbackHandler />} />
       <Route path="/Analytics" element={<LayoutWrapper currentPageName="Analytics"><Analytics /></LayoutWrapper>} />
       <Route path="/Challenges" element={<LayoutWrapper currentPageName="Challenges"><Challenges /></LayoutWrapper>} />
       <Route path="/Chat" element={<LayoutWrapper currentPageName="Chat"><Chat /></LayoutWrapper>} />

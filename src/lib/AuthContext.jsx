@@ -10,7 +10,15 @@ export const AuthProvider = ({ children }) => {
   const [authError, setAuthError] = useState(null);
 
   useEffect(() => {
-    checkAuth();
+    // If there's an access_token in the URL (post-login redirect), give the SDK
+    // a tick to consume it before checking auth state.
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasToken = urlParams.has('access_token') || urlParams.has('_preview_token');
+    if (hasToken) {
+      setTimeout(checkAuth, 50);
+    } else {
+      checkAuth();
+    }
   }, []);
 
   const checkAuth = async () => {
