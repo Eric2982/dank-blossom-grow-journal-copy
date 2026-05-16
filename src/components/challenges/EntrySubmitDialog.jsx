@@ -76,7 +76,7 @@ export default function EntrySubmitDialog({ challenge, open, onClose }) {
       strain_id: strain.id,
       strain_name: strain.name,
       user_email: user.email,
-      user_name: user.full_name,
+      user_name: user.full_name || user.email,
       photos: photos,
       description: description,
       metrics: metrics,

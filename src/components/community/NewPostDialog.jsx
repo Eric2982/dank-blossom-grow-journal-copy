@@ -40,7 +40,7 @@ export default function NewPostDialog({ open, onClose, onSubmit, user }) {
       tags: tagArr,
       photos,
       author_email: form.is_anonymous ? "" : user?.email,
-      author_name: form.is_anonymous ? "Anonymous Grower" : user?.full_name,
+      author_name: form.is_anonymous ? "Anonymous Grower" : (user?.full_name || user?.email),
     });
     setForm({ title: "", content: "", category: "question", tags: "", strain_name: "", skill_level: "all", is_anonymous: false });
     setPhotos([]);

@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const navigateToLogin = () => {
-    base44.auth.redirectToLogin(window.location.href);
+    base44.auth.redirectToLogin(window.location.origin + '/');
   };
 
   return (
