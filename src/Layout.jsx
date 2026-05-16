@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useAuth } from "@/lib/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Menu, X, LogOut, Home, MessageSquare, Users, BookOpen, Leaf, Zap, Trophy, ShoppingBag, Settings, Crown, BarChart2, FileText } from "lucide-react";
 import { base44 } from "@/api/base44Client";
@@ -59,6 +60,11 @@ export default function Layout({ children, currentPageName }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const { navigateTo, direction } = useNavigation();
+  const { user, isLoadingAuth, isAuthenticated, authError } = useAuth();
+
+  useEffect(() => {
+    console.log('[Layout] render cycle — currentPageName:', currentPageName, '| user:', user?.email ?? 'null', '| isLoadingAuth:', isLoadingAuth, '| isAuthenticated:', isAuthenticated, '| authError:', authError?.type ?? 'none', '| pathname:', location.pathname, '| children:', children ? 'present' : 'null');
+  });
 
   const isActive = (path) => location.pathname === path;
 
