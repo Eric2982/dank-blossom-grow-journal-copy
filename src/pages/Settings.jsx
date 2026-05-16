@@ -216,7 +216,7 @@ export default function Settings() {
             <div className="flex items-center gap-3"><FileText className="w-5 h-5 text-white/60" /><div><h3 className="text-white font-medium">Privacy Policy</h3><p className="text-white/40 text-sm">How we handle your data</p></div></div>
             <ChevronDown className={`w-5 h-5 text-white/40 transition-transform ${showPrivacyPolicy ? 'rotate-180' : ''}`} />
           </button>
-          {showPrivacyPolicy && <div className="pt-4 border-t border-white/5 text-white/60 text-sm"><p className="text-white/40 text-xs mb-2">Last Updated: February 20, 2026</p><p>We collect account information, cultivation data, and usage data. Your data is encrypted and only accessible through your authenticated account. We do NOT sell your personal data. Contact support@dankblossom.app for questions.</p></div>}
+          {showPrivacyPolicy && <div className="pt-4 border-t border-white/5 text-white/60 text-sm"><a href="https://doc-hosting.flycricket.io/dank-blossom-grow-journal-privacy-policy/b923311f-f31b-463a-9158-880d13fafaa7/privacy" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 underline">View full Privacy Policy →</a></div>}
         </Card>
 
         <Card className="bg-white/[0.02] border-white/5 p-6">
