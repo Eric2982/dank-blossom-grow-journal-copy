@@ -23,12 +23,13 @@ const getAppParams = () => {
   }
 
   const appId = import.meta.env.VITE_BASE44_APP_ID || "69be6d60d8aa3924e66d8e69";
+  const defaultAppBaseUrl = import.meta.env.VITE_BASE44_APP_BASE_URL || window.location.origin;
 
   return {
     appId,
     token: getAppParamValue("access_token", { removeFromUrl: true }) || getAppParamValue("_preview_token", { removeFromUrl: true }),
     functionsVersion: getAppParamValue("functions_version", { defaultValue: import.meta.env.VITE_BASE44_FUNCTIONS_VERSION }),
-    appBaseUrl: getAppParamValue("app_base_url", { defaultValue: import.meta.env.VITE_BASE44_APP_BASE_URL || "https://base44.app" }),
+    appBaseUrl: getAppParamValue("app_base_url", { defaultValue: defaultAppBaseUrl }),
   };
 };
 
