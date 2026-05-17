@@ -5,5 +5,6 @@ export const base44 = createClient({
   appId: appParams.appId,
   token: appParams.token,
   functionsVersion: appParams.functionsVersion,
+  appBaseUrl: appParams.appBaseUrl,
   requiresAuth: true,
 });

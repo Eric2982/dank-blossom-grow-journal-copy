@@ -20,6 +20,7 @@ const getAppParams = () => {
       appId,
       token: null,
       functionsVersion: null,
+      appBaseUrl: 'https://base44.app',
     };
   }
 
@@ -27,6 +28,7 @@ const getAppParams = () => {
     appId,
     token: getAppParamValue("access_token", { removeFromUrl: true }) || getAppParamValue("_preview_token", { removeFromUrl: true }),
     functionsVersion: getAppParamValue("functions_version", { defaultValue: import.meta.env?.VITE_BASE44_FUNCTIONS_VERSION }),
+    appBaseUrl: 'https://base44.app',
   };
 };
 
